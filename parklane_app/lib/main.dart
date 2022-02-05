@@ -94,6 +94,7 @@ class MyApp extends StatelessWidget {
         home: const HomeScreen(),
         onGenerateRoute: appRouter.onGenerateRoute,
         // initialRoute: LoginSignupScreen.route,
+        initialRoute: LoginSignupScreen.route,
       ),
     );
   }
