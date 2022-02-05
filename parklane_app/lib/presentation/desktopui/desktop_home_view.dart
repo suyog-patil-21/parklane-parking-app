@@ -11,6 +11,7 @@ class DesktopHomeView extends StatelessWidget {
         child: Row(
           children: [
             // * SideBar area
+            // FIXME : // ! Try to use AspectRatio instead of Expanded for Responsive design
             Expanded(
               flex: 2,
               child: Container(

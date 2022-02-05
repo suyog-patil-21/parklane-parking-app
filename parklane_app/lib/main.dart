@@ -4,9 +4,10 @@ import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:parklane_app/business_logic/internet_status_cubit/internet_cubit.dart';
+import 'package:parklane_app/presentation/screen/login_signup_page.dart';
 import 'package:parklane_app/router/app_routes.dart';
 import 'constants/theme_color.dart';
-import 'presentation/screen/home_page.dart';
+import 'presentation/screen/home_screen.dart';
 import 'constants/theme_color.dart' as My;
 
 void main() {
@@ -91,6 +92,7 @@ class MyApp extends StatelessWidget {
         ),
         home: const HomeScreen(),
         onGenerateRoute: appRouter.onGenerateRoute,
+        initialRoute: LoginSignupScreen.route,
       ),
     );
   }

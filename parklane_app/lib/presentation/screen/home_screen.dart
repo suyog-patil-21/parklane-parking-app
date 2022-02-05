@@ -7,6 +7,7 @@ import '../mobileui/mobile_home_view.dart';
 import '../widgets/gobals/responsive_layout.dart';
 
 class HomeScreen extends StatelessWidget {
+  static const String route = '/';
   const HomeScreen({Key? key}) : super(key: key);
 
   @override
@@ -38,7 +39,9 @@ class HomeScreen extends StatelessWidget {
                       style: Theme.of(context).textTheme.headline4)),
             );
           }
-          return Container();
+          return Container(
+            child: Text('SomeThing When wrong try restarting the App'),
+          );
         },
       ),
     );
