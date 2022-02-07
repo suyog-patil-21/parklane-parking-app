@@ -10,30 +10,61 @@ class CustomBottomSearchBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      height: screenSize.height * 0.1,
-      padding: EdgeInsets.symmetric(vertical: 8, horizontal: 32),
-      // color: Colors.red,
-      child: Row(
-        mainAxisSize: MainAxisSize.max,
-        children: [
-          Icon(Icons.search_rounded),
-          SizedBox(
-            width: 12.0,
-          ),
-          Expanded(
-            child: TextField(
-              decoration: InputDecoration(
-                  border: InputBorder.none, hintText: 'Parking address...'),
-              keyboardType: TextInputType.url,
-            ),
-          ),
-          Icon(
-            Icons.arrow_back_ios_new,
-            size: 16,
-          )
-        ],
+    return ClipPath(
+      clipBehavior: Clip.hardEdge,
+      clipper: BottomSearchBarCustomClipper(),
+      child: BottomAppBar(
+        elevation: 8,
+        child: Container(
+            padding: EdgeInsets.symmetric(vertical: 8, horizontal: 16),
+            // alignment: Alignment.center,
+            child: SafeArea(
+              child: Row(children: [
+                Icon(Icons.search),
+                const SizedBox(
+                  width: 10.0,
+                ),
+                Expanded(
+                    child: Container(
+                  height: 50,
+                  child: TextField(
+                      decoration: InputDecoration(
+                          border: InputBorder.none,
+                          hintText: 'Search the place...')),
+                )),
+                const SizedBox(
+                  width: 10.0,
+                ),
+                Icon(
+                  Icons.arrow_back_ios_new,
+                )
+              ]),
+            )),
       ),
     );
+  }
+}
+
+class BottomSearchBarCustomClipper extends CustomClipper<Path> {
+  @override
+  getClip(Size size) {
+    Path path = Path();
+    path.moveTo(0, 0);
+    path.lineTo(0, size.height);
+    path.lineTo(size.width, size.height);
+    path.lineTo(size.width, 0);
+    var roundheight = size.height * 0.3;
+
+    path.quadraticBezierTo(
+        size.width, roundheight, size.width - roundheight, roundheight);
+    path.lineTo(roundheight, roundheight);
+    path.quadraticBezierTo(0, roundheight, 0, 0);
+    path.close();
+    return path;
+  }
+
+  @override
+  bool shouldReclip(covariant CustomClipper oldClipper) {
+    return false;
   }
 }

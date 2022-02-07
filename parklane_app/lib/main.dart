@@ -13,7 +13,8 @@ import 'constants/theme_color.dart' as My;
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
   SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
-
+  SystemChrome.setSystemUIOverlayStyle(
+      SystemUiOverlayStyle(statusBarColor: Colors.transparent));
   runApp(MyApp(
     connectivity: Connectivity(),
     appRouter: AppRouter(),
@@ -92,7 +93,7 @@ class MyApp extends StatelessWidget {
         ),
         home: const HomeScreen(),
         onGenerateRoute: appRouter.onGenerateRoute,
-        initialRoute: LoginSignupScreen.route,
+        // initialRoute: LoginSignupScreen.route,
       ),
     );
   }
