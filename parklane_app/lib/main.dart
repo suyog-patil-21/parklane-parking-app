@@ -6,6 +6,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:parklane_app/business_logic/internet_status_cubit/internet_cubit.dart';
 import 'package:parklane_app/presentation/screen/login_signup_page.dart';
 import 'package:parklane_app/router/app_routes.dart';
+import 'business_logic/switch_login_signup_bloc/switchloginsignupui_bloc.dart';
 import 'constants/theme_color.dart';
 import 'presentation/screen/home_screen.dart';
 import 'constants/theme_color.dart' as My;
@@ -34,7 +35,10 @@ class MyApp extends StatelessWidget {
       providers: [
         BlocProvider(
           create: (context) => InternetCubit(connectivity: connectivity),
-        )
+        ),
+        BlocProvider(
+          create: (context) => SwitchloginsignupuiBloc(),
+        ),
       ],
       child: MaterialApp(
         title: 'Parklane',
