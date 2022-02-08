@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:parklane_app/business_logic/switch_login_signup_bloc/switchloginsignupui_bloc.dart';
 import 'package:parklane_app/presentation/widgets/custom/ui_design/custom_wave_ui_design.dart';
 
@@ -27,17 +28,30 @@ class MobileSignUpView extends StatelessWidget {
           child: Column(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          ClipPath(
-            clipper: SignUpWaveUiDesignClipper(),
-            child: Container(
-              color: Colors.amber.shade200,
-              width: double.infinity,
-              alignment: Alignment.centerLeft,
-              padding: const EdgeInsets.symmetric(horizontal: 22, vertical: 6),
-              height: screenSize.height * 0.50,
-              child: Text(
-                'Create\nAccount',
-                style: Theme.of(context).textTheme.headline4,
+          Container(
+            height: screenSize.height * 0.5,
+            width: double.infinity,
+            child: ClipPath(
+              clipper: SignUpWaveUiDesignClipper(),
+              child: Stack(
+                children: [
+                  SvgPicture.asset(
+                    'assets/svgs/intro_screen.svg',
+                    fit: BoxFit.fitWidth,
+                  ),
+                  Container(
+                    // color: Colors.amber.shade200,
+                    width: double.infinity,
+                    alignment: Alignment.centerLeft,
+                    padding:
+                        const EdgeInsets.symmetric(horizontal: 22, vertical: 6),
+                    height: screenSize.height * 0.50,
+                    child: Text(
+                      'Create\nAccount',
+                      style: Theme.of(context).textTheme.headline4,
+                    ),
+                  ),
+                ],
               ),
             ),
           ),
@@ -74,45 +88,62 @@ class MobileSignUpView extends StatelessWidget {
                               hintText: 'Your password',
                               suffixIcon: Icon(Icons.visibility))),
                       const SizedBox(
-                        height: 5,
+                        height: 25,
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: ElevatedButton(
+                          onPressed: () {
+                            print("Created Your account");
+                          },
+                          child: const Text(
+                            'Sign Up',
+                          ),
+                          style: ButtonStyle(
+                              minimumSize: MaterialStateProperty.all<Size>(
+                                  Size(screenSize.width - 0.1, 50))),
+                        ),
+                      ),
+                      const SizedBox(
+                        height: 8,
                       ),
                       Row(
-                        mainAxisAlignment: MainAxisAlignment.end,
                         children: const [
-                          Text('Forget Password?'),
+                          Expanded(
+                            child: Divider(
+                              thickness: 2,
+                              endIndent: 10,
+                              indent: 2,
+                            ),
+                          ),
+                          Text('or'),
+                          Expanded(
+                            child:
+                                Divider(thickness: 2, endIndent: 2, indent: 10),
+                          ),
                         ],
                       ),
                       const SizedBox(
-                        height: 25,
+                        height: 8,
                       ),
-                      ElevatedButton(
-                        onPressed: () {
-                          print("Created Your account");
-                        },
-                        child: const Text(
-                          'Sign Up',
-                        ),
-                        style: ButtonStyle(
-                            minimumSize: MaterialStateProperty.all<Size>(
-                                Size(screenSize.width - 0.1, 50))),
-                      ),
-                      const SizedBox(
-                        height: 15,
-                      ),
-                      OutlinedButton(
-                          style: OutlinedButton.styleFrom(
-                              side: BorderSide(
-                                  width: 2,
-                                  color: Theme.of(context).colorScheme.primary),
-                              minimumSize: Size(screenSize.width - 0.1, 50)),
-                          onPressed: () {
-                            context
-                                .read<SwitchloginsignupuiBloc>()
-                                .add(LoginSwitchEvent());
-                          },
-                          child: const Text(
-                            'Log in',
-                          ))
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: OutlinedButton(
+                            style: OutlinedButton.styleFrom(
+                                side: BorderSide(
+                                    width: 2,
+                                    color:
+                                        Theme.of(context).colorScheme.primary),
+                                minimumSize: Size(screenSize.width - 0.1, 50)),
+                            onPressed: () {
+                              context
+                                  .read<SwitchloginsignupuiBloc>()
+                                  .add(LoginSwitchEvent());
+                            },
+                            child: const Text(
+                              'Log in',
+                            )),
+                      )
                     ],
                   ),
                 ),

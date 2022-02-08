@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:parklane_app/business_logic/switch_login_signup_bloc/switchloginsignupui_bloc.dart';
 import 'package:parklane_app/presentation/widgets/custom/ui_design/custom_wave_ui_design.dart';
 
@@ -27,20 +28,32 @@ class MobileLoginView extends StatelessWidget {
           child: Column(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          ClipPath(
-            clipper: LoginWaveUiDesignClipper(),
-            child: Container(
-              color: Colors.amber.shade200,
-              width: double.infinity,
-              alignment: Alignment.centerLeft,
-              padding: const EdgeInsets.symmetric(horizontal: 22, vertical: 6),
+          Container(
               height: screenSize.height * 0.5,
-              child: Text(
-                'Welcome\nBack',
-                style: Theme.of(context).textTheme.headline4,
-              ),
-            ),
-          ),
+              width: double.infinity,
+              child: ClipPath(
+                clipper: LoginWaveUiDesignClipper(),
+                child: Stack(
+                  children: [
+                    SvgPicture.asset(
+                      'assets/svgs/intro_screen.svg',
+                      fit: BoxFit.fitWidth,
+                    ),
+                    Container(
+                      // color: Colors.amber.shade200,
+                      width: double.infinity,
+                      alignment: Alignment.centerLeft,
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 22, vertical: 6),
+                      height: screenSize.height * 0.5,
+                      child: Text(
+                        'Welcome\nBack',
+                        style: Theme.of(context).textTheme.headline4,
+                      ),
+                    ),
+                  ],
+                ),
+              )),
           Align(
               alignment: Alignment.bottomCenter,
               child: Form(
@@ -77,16 +90,19 @@ class MobileLoginView extends StatelessWidget {
                       const SizedBox(
                         height: 25,
                       ),
-                      ElevatedButton(
-                        onPressed: () {
-                          print("You are Login in ");
-                        },
-                        child: const Text(
-                          'Log in',
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: ElevatedButton(
+                          onPressed: () {
+                            print("You are Login in ");
+                          },
+                          child: const Text(
+                            'Log in',
+                          ),
+                          style: ButtonStyle(
+                              minimumSize: MaterialStateProperty.all<Size>(
+                                  Size(screenSize.width - 0.1, 50))),
                         ),
-                        style: ButtonStyle(
-                            minimumSize: MaterialStateProperty.all<Size>(
-                                Size(screenSize.width - 0.1, 50))),
                       ),
                       const SizedBox(
                         height: 15,
@@ -110,20 +126,24 @@ class MobileLoginView extends StatelessWidget {
                       const SizedBox(
                         height: 15,
                       ),
-                      OutlinedButton(
-                          style: OutlinedButton.styleFrom(
-                              side: BorderSide(
-                                  width: 2,
-                                  color: Theme.of(context).colorScheme.primary),
-                              minimumSize: Size(screenSize.width - 0.1, 50)),
-                          onPressed: () {
-                            context
-                                .read<SwitchloginsignupuiBloc>()
-                                .add(SignUpSwitchEvent());
-                          },
-                          child: const Text(
-                            'Sign Up',
-                          ))
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: OutlinedButton(
+                            style: OutlinedButton.styleFrom(
+                                side: BorderSide(
+                                    width: 2,
+                                    color:
+                                        Theme.of(context).colorScheme.primary),
+                                minimumSize: Size(screenSize.width - 0.1, 50)),
+                            onPressed: () {
+                              context
+                                  .read<SwitchloginsignupuiBloc>()
+                                  .add(SignUpSwitchEvent());
+                            },
+                            child: const Text(
+                              'Sign Up',
+                            )),
+                      )
                     ],
                   ),
                 ),
