@@ -9,7 +9,7 @@ import '../widgets/custom/ui_design/custom_wave_ui_design.dart';
 import '../widgets/gobals/or_divider_widget.dart';
 
 class MobileSignUpView extends StatelessWidget {
-  final _formKey = GlobalKey<FormState>();
+  final _signupFormKey = GlobalKey<FormState>();
   MobileSignUpView({Key? key}) : super(key: key);
 
   @override
@@ -63,28 +63,28 @@ class MobileSignUpView extends StatelessWidget {
           Align(
               alignment: Alignment.bottomCenter,
               child: Form(
-                key: _formKey,
+                key: _signupFormKey,
                 child: Container(
                   margin: const EdgeInsets.all(20),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     mainAxisAlignment: MainAxisAlignment.end,
                     children: [
-                      userNameInputField(),
+                      _userNameInputField(),
                       const SizedBox(
                         height: 10,
                       ),
-                      emailInputField(),
+                      _emailInputField(),
                       const SizedBox(
                         height: 10,
                       ),
-                      passwordInputField(),
+                      _passwordInputField(),
                       const SizedBox(
                         height: 25,
                       ),
                       Padding(
                         padding: const EdgeInsets.all(8.0),
-                        child: signupSubmitButton(screenSize),
+                        child: _signupSubmitButton(screenSize),
                       ),
                       const SizedBox(
                         height: 8,
@@ -119,7 +119,7 @@ class MobileSignUpView extends StatelessWidget {
     );
   }
 
-  Widget signupSubmitButton(
+  Widget _signupSubmitButton(
     Size screenSize,
   ) {
     return BlocBuilder<SignupFormBloc, SignupFormState>(
@@ -129,7 +129,7 @@ class MobileSignUpView extends StatelessWidget {
             : ElevatedButton(
                 onPressed: () {
                   print("Created Your account");
-                  if (_formKey.currentState!.validate()) {
+                  if (_signupFormKey.currentState!.validate()) {
                     context.read<SignupFormBloc>().add(SignupSubmitedEvent());
                   }
                 },
@@ -144,7 +144,7 @@ class MobileSignUpView extends StatelessWidget {
     );
   }
 
-  Widget passwordInputField() {
+  Widget _passwordInputField() {
     return BlocBuilder<SignupFormBloc, SignupFormState>(
         builder: (context, state) {
       return TextFormField(
@@ -163,12 +163,12 @@ class MobileSignUpView extends StatelessWidget {
                     context.read<SignupFormBloc>().add(ToggleVisibility());
                   },
                   child: state.isvisible
-                      ? Icon(Icons.visibility)
-                      : Icon(Icons.visibility_off))));
+                      ? const Icon(Icons.visibility)
+                      : const Icon(Icons.visibility_off))));
     });
   }
 
-  Widget emailInputField() {
+  Widget _emailInputField() {
     return BlocBuilder<SignupFormBloc, SignupFormState>(
         builder: (context, state) {
       return TextFormField(
@@ -184,7 +184,7 @@ class MobileSignUpView extends StatelessWidget {
     });
   }
 
-  BlocBuilder<SignupFormBloc, SignupFormState> userNameInputField() {
+  Widget _userNameInputField() {
     return BlocBuilder<SignupFormBloc, SignupFormState>(
       builder: (context, state) {
         return TextFormField(

@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import '../../business_logic/cubit/login_sign_switch_cubit/loginsignswitch_cubit.dart';
 
+import '../../business_logic/cubit/login_sign_switch_cubit/loginsignswitch_cubit.dart';
 import 'mobile_login_view.dart';
 import 'mobile_signup_view.dart';
-import '../widgets/custom/ui_design/custom_wave_ui_design.dart';
 
 class MobileLoginSignupView extends StatelessWidget {
   static const String route = '/mobileauth';

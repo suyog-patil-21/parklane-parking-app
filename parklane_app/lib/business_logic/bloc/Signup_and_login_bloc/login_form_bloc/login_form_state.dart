@@ -1,30 +1,26 @@
-part of 'signup_form_bloc.dart';
+part of 'login_form_bloc.dart';
 
-class SignupFormState {
-  final String username;
-  bool get isValidUsername => username.length > 3;
+class LoginFormState {
   final String password;
-  bool get isValidPassword => password.length > 8;
+  bool get isValidPassword => password.isNotEmpty;
   final String email;
   // ! FIXME : Email Validation not Working
-  bool get isValidEmail => EmailValidator.validate(email);
+  bool get isValidEmail => EmailValidator.validate(email, true);
   final bool isvisible;
   final FormSubmissionStatus formStatus;
-  SignupFormState(
-      {this.username = '',
-      this.password = '',
+  LoginFormState(
+      {this.password = '',
       this.email = '',
       this.isvisible = true,
       this.formStatus = const InitialFormStatus()});
 
-  SignupFormState copyWith(
+  LoginFormState copyWith(
       {String? username,
       String? password,
       String? email,
       bool? isvisible,
       FormSubmissionStatus? formStatus}) {
-    return SignupFormState(
-        username: username ?? this.username,
+    return LoginFormState(
         password: password ?? this.password,
         email: email ?? this.email,
         isvisible: isvisible ?? this.isvisible,

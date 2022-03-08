@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import '../../business_logic/cubit/internet_status_cubit/internet_cubit.dart';
 
+import '../../business_logic/cubit/internet_status_cubit/internet_cubit.dart';
 import '../desktopui/desktop_home_view.dart';
 import '../mobileui/mobile_home_view.dart';
-
 import '../widgets/gobals/responsive_layout.dart';
 
 class HomeScreen extends StatelessWidget {

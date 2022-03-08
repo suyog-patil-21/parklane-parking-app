@@ -1,16 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import '../../business_logic/bloc/Signup_and_login_bloc/form_submission_status.dart';
+import '../../business_logic/bloc/Signup_and_login_bloc/login_form_bloc/login_form_bloc.dart';
 import '../widgets/gobals/or_divider_widget.dart';
-import 'mobile_signup_view.dart';
 
 import '../../business_logic/cubit/login_sign_switch_cubit/loginsignswitch_cubit.dart';
 import '../widgets/custom/ui_design/custom_wave_ui_design.dart';
 
 class MobileLoginView extends StatelessWidget {
-  final TextEditingController _passwordController = TextEditingController();
-  final TextEditingController _emailController = TextEditingController();
-
+  final _loginFormKey = GlobalKey<FormState>();
   MobileLoginView({Key? key}) : super(key: key);
 
   @override
@@ -63,47 +62,18 @@ class MobileLoginView extends StatelessWidget {
           Align(
               alignment: Alignment.bottomCenter,
               child: Form(
+                key: _loginFormKey,
                 child: Container(
                   margin: const EdgeInsets.all(20),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     mainAxisAlignment: MainAxisAlignment.end,
                     children: [
-                      TextFormField(
-                        controller: _emailController,
-                        validator: (value) {
-                          if (value!.isEmpty) {
-                            return 'Enter a Email';
-                          } else if (!RegExp(
-                                  r"^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,253}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,253}[a-zA-Z0-9])?)*$")
-                              .hasMatch(value)) {
-                            return 'Enter a valid Email';
-                          }
-                          return null;
-                        },
-                        decoration: const InputDecoration(
-                            prefixIcon: Icon(Icons.mail),
-                            hintText: 'Enter your Email',
-                            suffixIcon: Icon(Icons.check)),
-                      ),
+                      _emailInputField(),
                       const SizedBox(
                         height: 10,
                       ),
-                      TextFormField(
-                          controller: _passwordController,
-                          obscureText: true,
-                          validator: (value) {
-                            if (value!.isEmpty) {
-                              return 'Enter password';
-                            } else if (value.length < 8) {
-                              return 'Enter password greater than 8 letters';
-                            }
-                            return null;
-                          },
-                          decoration: InputDecoration(
-                              prefixIcon: Icon(Icons.password),
-                              hintText: 'Enter your Password',
-                              suffixIcon: Icon(Icons.visibility))),
+                      _passwordInputField(),
                       const SizedBox(
                         height: 5,
                       ),
@@ -118,21 +88,7 @@ class MobileLoginView extends StatelessWidget {
                       ),
                       Padding(
                         padding: const EdgeInsets.all(8.0),
-                        child: ElevatedButton(
-                          onPressed: () {
-                            print(_emailController.text +
-                                " " +
-                                _passwordController.text);
-
-                            print("You are Login in ");
-                          },
-                          child: const Text(
-                            'Log in',
-                          ),
-                          style: ButtonStyle(
-                              minimumSize: MaterialStateProperty.all<Size>(
-                                  Size(screenSize.width - 0.1, 50))),
-                        ),
+                        child: _loginSubmitButton(screenSize),
                       ),
                       const SizedBox(
                         height: 15,
@@ -164,6 +120,71 @@ class MobileLoginView extends StatelessWidget {
               ))
         ],
       )),
+    );
+  }
+
+  Widget _loginSubmitButton(Size screenSize) {
+    return BlocBuilder<LoginFormBloc, LoginFormState>(
+      builder: (context, state) {
+        return state.formStatus is FormSubmmitingStatus
+            ? const Center(child: CircularProgressIndicator())
+            : ElevatedButton(
+                onPressed: () {
+                  print("You are Login in ");
+                  if (_loginFormKey.currentState!.validate()) {
+                    context.read<LoginFormBloc>().add(LoginSubmitedEvent());
+                  }
+                },
+                child: const Text(
+                  'Log in',
+                ),
+                style: ButtonStyle(
+                    minimumSize: MaterialStateProperty.all<Size>(
+                        Size(screenSize.width - 0.1, 50))),
+              );
+      },
+    );
+  }
+
+  Widget _passwordInputField() {
+    return BlocBuilder<LoginFormBloc, LoginFormState>(
+      builder: (context, state) {
+        return TextFormField(
+            validator: (value) =>
+                state.isValidPassword ? null : 'Enter password empty',
+            onChanged: (value) => context
+                .read<LoginFormBloc>()
+                .add(LoginPasswordChangeEvent(password: value)),
+            obscureText: state.isvisible,
+            decoration: InputDecoration(
+                prefixIcon: const Icon(Icons.password),
+                hintText: 'Enter your Password',
+                suffixIcon: GestureDetector(
+                    onTap: () {
+                      context.read<LoginFormBloc>().add(ToggleVisibility());
+                    },
+                    child: state.isvisible
+                        ? const Icon(Icons.visibility)
+                        : const Icon(Icons.visibility_off))));
+      },
+    );
+  }
+
+  Widget _emailInputField() {
+    return BlocBuilder<LoginFormBloc, LoginFormState>(
+      builder: (context, state) {
+        return TextFormField(
+          validator: (value) =>
+              state.isValidEmail ? null : 'Enter a valid email',
+          onChanged: (value) => context
+              .read<LoginFormBloc>()
+              .add(LoginEmailChangeEvent(email: value)),
+          decoration: const InputDecoration(
+              prefixIcon: Icon(Icons.mail),
+              hintText: 'Enter your Email',
+              suffixIcon: Icon(Icons.check)),
+        );
+      },
     );
   }
 }

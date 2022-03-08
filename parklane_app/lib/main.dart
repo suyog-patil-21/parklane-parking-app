@@ -4,17 +4,14 @@ import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
 
+import 'business_logic/bloc/Signup_and_login_bloc/login_form_bloc/login_form_bloc.dart';
 import 'business_logic/bloc/Signup_and_login_bloc/signup_form_bloc/signup_form_bloc.dart';
-import 'data/repository/auth_repository.dart';
 import 'business_logic/cubit/internet_status_cubit/internet_cubit.dart';
-
 import 'business_logic/cubit/login_sign_switch_cubit/loginsignswitch_cubit.dart';
+import 'data/repository/auth_repository.dart';
 import 'presentation/router/app_routes.dart';
-import 'presentation/screen/login_signup_page.dart';
-
-import 'constants/theme_color.dart';
 import 'presentation/screen/home_screen.dart';
-import 'constants/theme_color.dart' as My;
+import 'presentation/screen/login_signup_page.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
@@ -47,9 +44,13 @@ class MyApp extends StatelessWidget {
             create: (context) => LoginSignupUISwitchCubit(),
           ),
           BlocProvider(
+            create: (context) => LoginFormBloc(
+                authRepository: RepositoryProvider.of<AuthRepository>(context)),
+          ),
+          BlocProvider(
             create: (context) => SignupFormBloc(
                 authRepository: RepositoryProvider.of<AuthRepository>(context)),
-          )
+          ),
         ],
         child: MaterialApp(
           title: 'Parklane',
