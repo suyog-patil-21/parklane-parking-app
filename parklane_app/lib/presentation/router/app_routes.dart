@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-import 'package:parklane_app/presentation/mobileui/mobile_login_intro_view.dart';
-import 'package:parklane_app/presentation/mobileui/mobile_login_signup_view.dart';
-import 'package:parklane_app/presentation/screen/home_screen.dart';
-import 'package:parklane_app/presentation/screen/login_signup_page.dart';
+import '../mobileui/mobile_login_intro_view.dart';
+import '../mobileui/mobile_login_signup_view.dart';
+import '../screen/home_screen.dart';
+import '../screen/login_signup_page.dart';
 
 class AppRouter {
   Route? onGenerateRoute(RouteSettings routeSettings) {
+    final args = routeSettings.arguments;
     switch (routeSettings.name) {
       case HomeScreen.route:
         // * Home Screen Route : '/'
@@ -21,7 +22,19 @@ class AppRouter {
         // * Mobile Login / Signup Screen route : '/mobileauth'
         return MaterialPageRoute(builder: (_) => MobileLoginSignupView());
       default:
-        return null;
+        // return null;
+        // for return a error page
+        return _errorRoute();
     }
+  }
+
+  static Route<dynamic> _errorRoute() {
+    return MaterialPageRoute(builder: (_) {
+      return const Scaffold(
+        body: Center(
+          child: Text('Error Routing see into AppRoute'),
+        ),
+      );
+    });
   }
 }

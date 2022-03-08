@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+
 import '../widgets/bottom_search_bar.dart';
 import '../widgets/floating_custom_home.dart';
 

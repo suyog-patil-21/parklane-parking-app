@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:parklane_app/business_logic/internet_status_cubit/internet_cubit.dart';
+import '../../business_logic/cubit/internet_status_cubit/internet_cubit.dart';
+
 import '../desktopui/desktop_home_view.dart';
 import '../mobileui/mobile_home_view.dart';
 
@@ -16,7 +17,7 @@ class HomeScreen extends StatelessWidget {
       listener: (context, state) {
         if (state is InternetDisconnected) {
           ScaffoldMessenger.of(context).clearSnackBars();
-          ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+          ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
             padding: EdgeInsets.all(10),
             content: Text('Your Are Disconnected'),
             // margin: EdgeInsets.all(10),

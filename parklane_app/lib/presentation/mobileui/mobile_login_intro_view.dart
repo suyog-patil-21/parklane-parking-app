@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:parklane_app/presentation/mobileui/mobile_login_signup_view.dart';
+import 'mobile_login_signup_view.dart';
 
 class MobileLoginIntroView extends StatelessWidget {
   static const String route = '/mobileauthintro';

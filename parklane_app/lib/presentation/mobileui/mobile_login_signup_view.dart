@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:parklane_app/business_logic/switch_login_signup_bloc/switchloginsignupui_bloc.dart';
-import 'package:parklane_app/presentation/mobileui/mobile_login_view.dart';
-import 'package:parklane_app/presentation/mobileui/mobile_signup_view.dart';
-import 'package:parklane_app/presentation/widgets/custom/ui_design/custom_wave_ui_design.dart';
+import '../../business_logic/cubit/login_sign_switch_cubit/loginsignswitch_cubit.dart';
+
+import 'mobile_login_view.dart';
+import 'mobile_signup_view.dart';
+import '../widgets/custom/ui_design/custom_wave_ui_design.dart';
 
 class MobileLoginSignupView extends StatelessWidget {
   static const String route = '/mobileauth';
@@ -11,9 +12,9 @@ class MobileLoginSignupView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<SwitchloginsignupuiBloc, SwitchloginsignupuiState>(
+    return BlocBuilder<LoginSignupUISwitchCubit, LoginSignupUISwitchState>(
       builder: (context, state) {
-        return state is LoginState ? MobileLoginView() : MobileSignUpView();
+        return state is LoginUIState ? MobileLoginView() : MobileSignUpView();
       },
     );
   }

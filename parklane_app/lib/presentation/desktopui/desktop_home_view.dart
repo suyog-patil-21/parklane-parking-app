@@ -52,6 +52,7 @@ class DesktopHomeView extends StatelessWidget {
               ),
             ),
             // * Map Area
+            // TODO : Implement Maps
             Expanded(
                 flex: 6,
                 child: Container(

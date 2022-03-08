@@ -3,7 +3,7 @@ import 'dart:async';
 import 'package:bloc/bloc.dart';
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:meta/meta.dart';
-import 'package:parklane_app/constants/enums.dart';
+import '../../../constants/enums.dart';
 
 part 'internet_state.dart';
 
@@ -15,17 +15,18 @@ class InternetCubit extends Cubit<InternetState> {
     connectivityStreamSubscription =
         connectivity.onConnectivityChanged.listen((connectivityResult) {
       if (connectivityResult == ConnectivityResult.wifi) {
-        emitInternetConnected(ConnectionType.Wifi);
+        emitInternetConnected(ConnectionType.wifi);
       } else if (connectivityResult == ConnectivityResult.mobile) {
-        emitInternetConnected(ConnectionType.Mobile);
+        emitInternetConnected(ConnectionType.mobile);
       } else if (connectivityResult == ConnectivityResult.ethernet) {
-        emitInternetConnected(ConnectionType.Ethernet);
+        emitInternetConnected(ConnectionType.ethernet);
       } else if (connectivityResult == ConnectivityResult.none) {
         emitInternetDisconnected();
       }
     });
   }
 
+  @override
   Future<void> close() {
     connectivityStreamSubscription.cancel();
     return super.close();

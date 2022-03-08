@@ -1,11 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:parklane_app/business_logic/switch_login_signup_bloc/switchloginsignupui_bloc.dart';
-import 'package:parklane_app/presentation/widgets/custom/ui_design/custom_wave_ui_design.dart';
+import '../widgets/gobals/or_divider_widget.dart';
+import 'mobile_signup_view.dart';
+
+import '../../business_logic/cubit/login_sign_switch_cubit/loginsignswitch_cubit.dart';
+import '../widgets/custom/ui_design/custom_wave_ui_design.dart';
 
 class MobileLoginView extends StatelessWidget {
-  const MobileLoginView({Key? key}) : super(key: key);
+  final TextEditingController _passwordController = TextEditingController();
+  final TextEditingController _emailController = TextEditingController();
+
+  MobileLoginView({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -64,7 +70,18 @@ class MobileLoginView extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.end,
                     children: [
                       TextFormField(
-                        decoration: InputDecoration(
+                        controller: _emailController,
+                        validator: (value) {
+                          if (value!.isEmpty) {
+                            return 'Enter a Email';
+                          } else if (!RegExp(
+                                  r"^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,253}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,253}[a-zA-Z0-9])?)*$")
+                              .hasMatch(value)) {
+                            return 'Enter a valid Email';
+                          }
+                          return null;
+                        },
+                        decoration: const InputDecoration(
                             prefixIcon: Icon(Icons.mail),
                             hintText: 'Enter your Email',
                             suffixIcon: Icon(Icons.check)),
@@ -73,7 +90,16 @@ class MobileLoginView extends StatelessWidget {
                         height: 10,
                       ),
                       TextFormField(
+                          controller: _passwordController,
                           obscureText: true,
+                          validator: (value) {
+                            if (value!.isEmpty) {
+                              return 'Enter password';
+                            } else if (value.length < 8) {
+                              return 'Enter password greater than 8 letters';
+                            }
+                            return null;
+                          },
                           decoration: InputDecoration(
                               prefixIcon: Icon(Icons.password),
                               hintText: 'Enter your Password',
@@ -94,6 +120,10 @@ class MobileLoginView extends StatelessWidget {
                         padding: const EdgeInsets.all(8.0),
                         child: ElevatedButton(
                           onPressed: () {
+                            print(_emailController.text +
+                                " " +
+                                _passwordController.text);
+
                             print("You are Login in ");
                           },
                           child: const Text(
@@ -107,22 +137,7 @@ class MobileLoginView extends StatelessWidget {
                       const SizedBox(
                         height: 15,
                       ),
-                      Row(
-                        children: const [
-                          Expanded(
-                            child: Divider(
-                              thickness: 2,
-                              endIndent: 10,
-                              indent: 2,
-                            ),
-                          ),
-                          Text('or'),
-                          Expanded(
-                            child:
-                                Divider(thickness: 2, endIndent: 2, indent: 10),
-                          ),
-                        ],
-                      ),
+                      const OrDividerForm(),
                       const SizedBox(
                         height: 15,
                       ),
@@ -136,9 +151,8 @@ class MobileLoginView extends StatelessWidget {
                                         Theme.of(context).colorScheme.primary),
                                 minimumSize: Size(screenSize.width - 0.1, 50)),
                             onPressed: () {
-                              context
-                                  .read<SwitchloginsignupuiBloc>()
-                                  .add(SignUpSwitchEvent());
+                              BlocProvider.of<LoginSignupUISwitchCubit>(context)
+                                  .switchToSignUp();
                             },
                             child: const Text(
                               'Sign Up',
