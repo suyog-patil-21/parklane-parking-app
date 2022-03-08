@@ -38,9 +38,9 @@ const createToken = (id) => {
 // * auth controllers
 // TODO : implement a secure way to send json to the client
 module.exports.signup_post = async (req, res) => {
-  const { email, password } = req.body;
+  const { email, password, username } = req.body;
   try {
-    const user = await User.create({ email, password });
+    const user = await User.create({ email, password, username });
     const token = createToken(user._id);
     res.status(201).json({ accessToken: token, user: user._id });
   } catch (err) {
