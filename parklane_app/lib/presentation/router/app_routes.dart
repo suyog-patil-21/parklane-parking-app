@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:parklane_app/presentation/screen/splash_screen.dart';
 import '../mobileui/mobile_login_intro_view.dart';
 import '../mobileui/mobile_login_signup_view.dart';
 import '../screen/home_screen.dart';
@@ -9,6 +10,9 @@ class AppRouter {
   Route? onGenerateRoute(RouteSettings routeSettings) {
     final args = routeSettings.arguments;
     switch (routeSettings.name) {
+      case SplashScreen.route:
+        // * Splash Screen Route : '/splash-Screen'
+        return MaterialPageRoute(builder: (_) => const SplashScreen());
       case HomeScreen.route:
         // * Home Screen Route : '/'
         return MaterialPageRoute(builder: (_) => HomeScreen());

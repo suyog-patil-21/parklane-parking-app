@@ -6,7 +6,6 @@ class SignupFormState {
   final String password;
   bool get isValidPassword => password.length > 8;
   final String email;
-  // ! FIXME : Email Validation not Working
   bool get isValidEmail => EmailValidator.validate(email);
   final bool isvisible;
   final FormSubmissionStatus formStatus;

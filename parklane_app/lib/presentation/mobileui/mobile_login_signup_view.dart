@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:parklane_app/presentation/mobileui/auth_view/mobile_login_view.dart';
+import 'package:parklane_app/presentation/mobileui/auth_view/mobile_signup_view.dart';
 
 import '../../business_logic/cubit/login_sign_switch_cubit/loginsignswitch_cubit.dart';
-import 'mobile_login_view.dart';
-import 'mobile_signup_view.dart';
 
 class MobileLoginSignupView extends StatelessWidget {
   static const String route = '/mobileauth';

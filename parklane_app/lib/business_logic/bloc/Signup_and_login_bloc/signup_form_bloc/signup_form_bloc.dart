@@ -3,7 +3,6 @@ import 'package:email_validator/email_validator.dart';
 import 'package:meta/meta.dart';
 import '../../../../data/repository/auth_repository.dart';
 import '../form_submission_status.dart';
-import '../form_submission_status.dart';
 part 'signup_form_event.dart';
 part 'signup_form_state.dart';
 
@@ -13,7 +12,7 @@ class SignupFormBloc extends Bloc<SignupFormEvent, SignupFormState> {
     on<SignupUsernameChangeEvent>(
         (event, emit) => emit(state.copyWith(username: event.username)));
     on<SigupEmailChangeEvent>(
-        (event, emit) => emit(state.copyWith(email: state.email)));
+        (event, emit) => emit(state.copyWith(email: event.email)));
     on<SignupPasswordChangeEvent>(
         ((event, emit) => emit(state.copyWith(password: event.password))));
     on<SignupSubmitedEvent>(_onSignupSubmitEvent);

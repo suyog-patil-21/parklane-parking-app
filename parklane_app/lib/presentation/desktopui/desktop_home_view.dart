@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 class DesktopHomeView extends StatelessWidget {
-  DesktopHomeView({Key? key}) : super(key: key);
+  const DesktopHomeView({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

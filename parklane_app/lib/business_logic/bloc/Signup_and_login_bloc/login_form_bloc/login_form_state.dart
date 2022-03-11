@@ -4,8 +4,7 @@ class LoginFormState {
   final String password;
   bool get isValidPassword => password.isNotEmpty;
   final String email;
-  // ! FIXME : Email Validation not Working
-  bool get isValidEmail => EmailValidator.validate(email, true);
+  bool get isValidEmail => EmailValidator.validate(email);
   final bool isvisible;
   final FormSubmissionStatus formStatus;
   LoginFormState(
