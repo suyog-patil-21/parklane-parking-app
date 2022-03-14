@@ -2,10 +2,15 @@ import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:parklane_app/business_logic/bloc/authentication_bloc/authentication_bloc.dart';
-import 'package:parklane_app/constants/text_theme.dart';
-import 'package:parklane_app/data/repository/user_repository.dart';
-import 'package:parklane_app/presentation/screen/app_screen.dart';
+import 'business_logic/bloc/authentication_bloc/authentication_bloc.dart';
+
+import 'constants/text_theme.dart';
+import 'data/repository/user_repository.dart';
+import 'presentation/screen/app_screen.dart';
+
+import 'presentation/screen/home_screen.dart';
+import 'presentation/screen/login_signup_page.dart';
+import 'presentation/screen/splash_screen.dart';
 
 import 'business_logic/bloc/Signup_and_login_bloc/login_form_bloc/login_form_bloc.dart';
 import 'business_logic/bloc/Signup_and_login_bloc/signup_form_bloc/signup_form_bloc.dart';
@@ -71,39 +76,64 @@ class MyApp extends StatelessWidget {
                 authRepository: RepositoryProvider.of<AuthRepository>(context)),
           ),
         ],
-        child: MaterialApp(
-          title: 'Parklane',
-          theme: ThemeData(
-            primarySwatch: Colors.amber,
-            bottomSheetTheme: BottomSheetThemeData(
-                shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(24))),
-            elevatedButtonTheme: ElevatedButtonThemeData(
-                style: ButtonStyle(
-                    shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-                        RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(12.0),
-            )))),
-            outlinedButtonTheme: OutlinedButtonThemeData(
-                style: ButtonStyle(
-                    shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-                        RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(12.0),
-            )))),
-            floatingActionButtonTheme: const FloatingActionButtonThemeData(
-                shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.all(Radius.circular(12)))),
-            cardTheme: CardTheme(
-                elevation: 8,
-                shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(24))),
-            textTheme: textTheme,
-          ),
-          home: const App(),
-          onGenerateRoute: appRouter.onGenerateRoute,
-          // initialRoute: LoginSignupScreen.route,
-          // initialRoute: LoginSignupScreen.route,
-        ),
+        child: App(appRouter: appRouter),
+        // child: MaterialApp(
+        //   title: 'Parklane',
+        //   theme: ThemeData(
+        //     primarySwatch: Colors.amber,
+        //     bottomSheetTheme: BottomSheetThemeData(
+        //         shape: RoundedRectangleBorder(
+        //             borderRadius: BorderRadius.circular(24))),
+        //     elevatedButtonTheme: ElevatedButtonThemeData(
+        //         style: ButtonStyle(
+        //             shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+        //                 RoundedRectangleBorder(
+        //       borderRadius: BorderRadius.circular(12.0),
+        //     )))),
+        //     outlinedButtonTheme: OutlinedButtonThemeData(
+        //         style: ButtonStyle(
+        //             shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+        //                 RoundedRectangleBorder(
+        //       borderRadius: BorderRadius.circular(12.0),
+        //     )))),
+        //     floatingActionButtonTheme: const FloatingActionButtonThemeData(
+        //         shape: RoundedRectangleBorder(
+        //             borderRadius: BorderRadius.all(Radius.circular(12)))),
+        //     cardTheme: CardTheme(
+        //         elevation: 8,
+        //         shape: RoundedRectangleBorder(
+        //             borderRadius: BorderRadius.circular(24))),
+        //     textTheme: textTheme,
+        //   ),
+        //   // builder: (context, child) {
+        //   //   return App(
+        //   //     child: child,
+        //   //   );
+        //     // return BlocListener<AuthenticationBloc, AuthenticationState>(
+        //     //   listener: ((context, state) {
+        //     //     switch (state.status) {
+        //     //       case AuthenticationStatus.authenticated:
+        //     //         Navigator.of(context).pushNamedAndRemoveUntil(
+        //     //             HomeScreen.route, (route) => false);
+        //     //         break;
+        //     //       case AuthenticationStatus.unauthenticated:
+        //     //         Navigator.of(context).pushNamedAndRemoveUntil(
+        //     //             LoginSignupScreen.route, (route) => false);
+        //     //         break;
+        //     //       default:
+        //     //         break;
+        //     //     }
+        //     //   }),
+        //     //   child: child,
+        //     // );
+        //   },
+        //   // home: App(),
+        //   onGenerateRoute: appRouter.onGenerateRoute,
+
+        //   // onGenerateRoute: appRouter.onGenerateRoute,
+        //   // initialRoute: LoginSignupScreen.route,
+        //   // initialRoute: LoginSignupScreen.route,
+        // ),
       ),
     );
   }

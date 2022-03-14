@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:parklane_app/business_logic/bloc/Signup_and_login_bloc/form_submission_status.dart';
-import 'package:parklane_app/business_logic/bloc/Signup_and_login_bloc/signup_form_bloc/signup_form_bloc.dart';
-import 'package:parklane_app/business_logic/cubit/login_sign_switch_cubit/loginsignswitch_cubit.dart';
-import 'package:parklane_app/presentation/widgets/custom/ui_design/custom_wave_ui_design.dart';
-import 'package:parklane_app/presentation/widgets/gobals/or_divider_widget.dart';
+import '../../../business_logic/bloc/Signup_and_login_bloc/form_submission_status.dart';
+import '../../../business_logic/bloc/Signup_and_login_bloc/signup_form_bloc/signup_form_bloc.dart';
+import '../../../business_logic/cubit/login_sign_switch_cubit/loginsignswitch_cubit.dart';
+import '../../widgets/custom/ui_design/custom_wave_ui_design.dart';
+import '../../widgets/gobals/or_divider_widget.dart';
 
 class MobileSignUpView extends StatelessWidget {
   final _signupFormKey = GlobalKey<FormState>();

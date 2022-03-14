@@ -1,9 +1,8 @@
 import 'dart:async';
 
 import 'package:bloc/bloc.dart';
-
 import 'package:equatable/equatable.dart';
-import 'package:parklane_app/data/models/user_model.dart';
+
 import '../../../data/repository/auth_repository.dart';
 import '../../../data/repository/user_repository.dart';
 
@@ -61,7 +60,7 @@ class AuthenticationBloc
     _authenticationRepository.logOut();
   }
 
-  Future<UserModel?> _tryGetUser() async {
+  Future<User?> _tryGetUser() async {
     try {
       final user = await _userRepository.getUser();
       return user;

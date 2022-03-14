@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:parklane_app/presentation/widgets/gobals/responsive_layout.dart';
+import '../widgets/gobals/responsive_layout.dart';
 
 class SplashScreen extends StatelessWidget {
   static const String route = '/splash-Screen';
@@ -10,12 +10,20 @@ class SplashScreen extends StatelessWidget {
     return Scaffold(
       body: Center(
           child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          const FlutterLogo(),
+          const FlutterLogo(
+            size: 30,
+          ),
           Text(
             'Parklane',
             style: Theme.of(context).textTheme.headline3,
           ),
+          TextButton(
+              onPressed: () {
+                Navigator.pop(context);
+              },
+              child: Text("go back"))
         ],
       )),
     );

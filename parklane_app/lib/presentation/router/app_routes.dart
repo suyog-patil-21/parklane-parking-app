@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-import 'package:parklane_app/presentation/screen/splash_screen.dart';
+import '../screen/splash_screen.dart';
 import '../mobileui/mobile_login_intro_view.dart';
 import '../mobileui/mobile_login_signup_view.dart';
 import '../screen/home_screen.dart';

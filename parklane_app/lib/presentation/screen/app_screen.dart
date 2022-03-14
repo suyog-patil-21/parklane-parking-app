@@ -1,34 +1,78 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:parklane_app/business_logic/bloc/authentication_bloc/authentication_bloc.dart';
-import 'package:parklane_app/data/repository/auth_repository.dart';
-import 'package:parklane_app/presentation/screen/home_screen.dart';
-import 'package:parklane_app/presentation/screen/login_signup_page.dart';
-import 'package:parklane_app/presentation/screen/splash_screen.dart';
+import '../../business_logic/bloc/authentication_bloc/authentication_bloc.dart';
+import '../../data/repository/auth_repository.dart';
+import '../router/app_routes.dart';
+import 'home_screen.dart';
+import 'login_signup_page.dart';
 
-class App extends StatelessWidget {
-  const App({Key? key}) : super(key: key);
+import '../../constants/text_theme.dart';
+
+class App extends StatefulWidget {
+  App({Key? key, required this.appRouter}) : super(key: key);
+  // Widget? child;
+  final AppRouter appRouter;
 
   @override
+  State<App> createState() => _AppState();
+}
+
+class _AppState extends State<App> {
+  final _navigatorKey = GlobalKey<NavigatorState>();
+
+  NavigatorState get _navigator => _navigatorKey.currentState!;
+  @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: BlocListener<AuthenticationBloc, AuthenticationState>(
-        listener: (context, state) {
-          switch (state.status) {
-            case AuthenticationStatus.authenticated:
-              Navigator.of(context)
-                  .pushNamedAndRemoveUntil(HomeScreen.route, (route) => false);
-              break;
-            case AuthenticationStatus.unauthenticated:
-              Navigator.of(context).pushNamedAndRemoveUntil(
-                  LoginSignupScreen.route, (route) => false);
-              break;
-            default:
-              break;
-          }
-        },
-        child: const SplashScreen(),
+    return MaterialApp(
+      navigatorKey: _navigatorKey,
+      title: 'Parklane',
+      theme: ThemeData(
+        primarySwatch: Colors.amber,
+        bottomSheetTheme: BottomSheetThemeData(
+            shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(24))),
+        elevatedButtonTheme: ElevatedButtonThemeData(
+            style: ButtonStyle(
+                shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                    RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(12.0),
+        )))),
+        outlinedButtonTheme: OutlinedButtonThemeData(
+            style: ButtonStyle(
+                shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                    RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(12.0),
+        )))),
+        floatingActionButtonTheme: const FloatingActionButtonThemeData(
+            shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.all(Radius.circular(12)))),
+        cardTheme: CardTheme(
+            elevation: 8,
+            shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(24))),
+        textTheme: textTheme,
       ),
+      builder: (context, child) {
+        return BlocListener<AuthenticationBloc, AuthenticationState>(
+          listener: ((context, state) {
+            switch (state.status) {
+              case AuthenticationStatus.authenticated:
+                _navigator.pushNamedAndRemoveUntil(
+                    HomeScreen.route, (route) => false);
+                break;
+              case AuthenticationStatus.unauthenticated:
+                _navigator.pushNamedAndRemoveUntil(
+                    LoginSignupScreen.route, (route) => false);
+                break;
+              default:
+                break;
+            }
+          }),
+          child: child,
+        );
+      },
+      // home: App(),
+      onGenerateRoute: widget.appRouter.onGenerateRoute,
     );
   }
 }

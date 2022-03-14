@@ -1,5 +1,6 @@
 import 'package:bloc/bloc.dart';
 import 'package:email_validator/email_validator.dart';
+
 import '../../../../data/repository/auth_repository.dart';
 import '../form_submission_status.dart';
 
