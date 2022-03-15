@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 class DesktopHomeView extends StatelessWidget {
-  DesktopHomeView({Key? key}) : super(key: key);
+  const DesktopHomeView({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -11,6 +11,7 @@ class DesktopHomeView extends StatelessWidget {
         child: Row(
           children: [
             // * SideBar area
+            // FIXME : // ! Try to use AspectRatio instead of Expanded for Responsive design
             Expanded(
               flex: 2,
               child: Container(
@@ -51,6 +52,7 @@ class DesktopHomeView extends StatelessWidget {
               ),
             ),
             // * Map Area
+            // TODO : Implement Maps
             Expanded(
                 flex: 6,
                 child: Container(

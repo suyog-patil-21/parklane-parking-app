@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../screen/splash_screen.dart';
 
 class CustomFloatingButton extends StatelessWidget {
   const CustomFloatingButton({
@@ -16,7 +17,9 @@ class CustomFloatingButton extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           FloatingActionButton(
-            onPressed: () {},
+            onPressed: () {
+              Navigator.of(context).pushNamed(SplashScreen.route);
+            },
             child: Icon(Icons.ac_unit),
           ),
           Card(
