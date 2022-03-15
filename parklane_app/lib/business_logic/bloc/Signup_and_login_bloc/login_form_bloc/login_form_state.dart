@@ -4,7 +4,7 @@ class LoginFormState {
   final String password;
   bool get isValidPassword => password.isNotEmpty;
   final String email;
-  bool get isValidEmail => EmailValidator.validate(email);
+  bool get isValidEmail => EmailValidator.validate(email.trim());
   final bool isvisible;
   final FormSubmissionStatus formStatus;
   LoginFormState(

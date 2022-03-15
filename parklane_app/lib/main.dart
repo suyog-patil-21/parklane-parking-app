@@ -2,22 +2,18 @@ import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'business_logic/bloc/authentication_bloc/authentication_bloc.dart';
 
-import 'constants/text_theme.dart';
-import 'data/repository/user_repository.dart';
-import 'presentation/screen/app_screen.dart';
-
-import 'presentation/screen/home_screen.dart';
-import 'presentation/screen/login_signup_page.dart';
-import 'presentation/screen/splash_screen.dart';
-
-import 'business_logic/bloc/Signup_and_login_bloc/login_form_bloc/login_form_bloc.dart';
-import 'business_logic/bloc/Signup_and_login_bloc/signup_form_bloc/signup_form_bloc.dart';
-import 'business_logic/cubit/internet_status_cubit/internet_cubit.dart';
-import 'business_logic/cubit/login_sign_switch_cubit/loginsignswitch_cubit.dart';
-import 'data/repository/auth_repository.dart';
-import 'presentation/router/app_routes.dart';
+import 'package:google_fonts/google_fonts.dart';
+import 'package:parklane_app/business_logic/bloc/Signup_and_login_bloc/login_form_bloc/login_form_bloc.dart';
+import 'package:parklane_app/business_logic/bloc/Signup_and_login_bloc/signup_form_bloc/signup_form_bloc.dart';
+import 'package:parklane_app/business_logic/bloc/authentication_bloc/authentication_bloc.dart';
+import 'package:parklane_app/business_logic/cubit/internet_status_cubit/internet_cubit.dart';
+import 'package:parklane_app/business_logic/cubit/login_sign_switch_cubit/loginsignswitch_cubit.dart';
+import 'package:parklane_app/data/repository/auth_repository.dart';
+import 'package:parklane_app/data/repository/user_repository.dart';
+import 'package:parklane_app/presentation/router/app_routes.dart';
+import 'package:parklane_app/presentation/screen/app_screen.dart';
+import 'constants/theme_color.dart' as My;
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
@@ -76,7 +72,7 @@ class MyApp extends StatelessWidget {
                 authRepository: RepositoryProvider.of<AuthRepository>(context)),
           ),
         ],
-        child: App(appRouter: appRouter),
+        child: AppView(appRouter: appRouter),
         // child: MaterialApp(
         //   title: 'Parklane',
         //   theme: ThemeData(

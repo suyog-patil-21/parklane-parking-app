@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import '../screen/splash_screen.dart';
 import '../mobileui/mobile_login_intro_view.dart';
 import '../mobileui/mobile_login_signup_view.dart';
-import '../screen/home_screen.dart';
+import '../screen/map_screen.dart';
 import '../screen/login_signup_page.dart';
 
 class AppRouter {
@@ -11,11 +10,11 @@ class AppRouter {
     final args = routeSettings.arguments;
     switch (routeSettings.name) {
       case SplashScreen.route:
-        // * Splash Screen Route : '/splash-Screen'
+        // * Splash Screen Route : '/'
         return MaterialPageRoute(builder: (_) => const SplashScreen());
-      case HomeScreen.route:
-        // * Home Screen Route : '/'
-        return MaterialPageRoute(builder: (_) => HomeScreen());
+      case MapScreen.route:
+        // * Home Screen Route : '/map-screen'
+        return MaterialPageRoute(builder: (_) => MapScreen());
       case LoginSignupScreen.route:
         // * LoginSignupSCreen Routes: '/auth'
         return MaterialPageRoute(builder: (_) => LoginSignupScreen());

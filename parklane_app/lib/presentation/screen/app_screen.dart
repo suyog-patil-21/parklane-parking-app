@@ -3,21 +3,21 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../business_logic/bloc/authentication_bloc/authentication_bloc.dart';
 import '../../data/repository/auth_repository.dart';
 import '../router/app_routes.dart';
-import 'home_screen.dart';
+import 'map_screen.dart';
 import 'login_signup_page.dart';
 
 import '../../constants/text_theme.dart';
 
-class App extends StatefulWidget {
-  App({Key? key, required this.appRouter}) : super(key: key);
+class AppView extends StatefulWidget {
+  AppView({Key? key, required this.appRouter}) : super(key: key);
   // Widget? child;
   final AppRouter appRouter;
 
   @override
-  State<App> createState() => _AppState();
+  State<AppView> createState() => _AppViewState();
 }
 
-class _AppState extends State<App> {
+class _AppViewState extends State<AppView> {
   final _navigatorKey = GlobalKey<NavigatorState>();
 
   NavigatorState get _navigator => _navigatorKey.currentState!;
@@ -58,7 +58,7 @@ class _AppState extends State<App> {
             switch (state.status) {
               case AuthenticationStatus.authenticated:
                 _navigator.pushNamedAndRemoveUntil(
-                    HomeScreen.route, (route) => false);
+                    MapScreen.route, (route) => false);
                 break;
               case AuthenticationStatus.unauthenticated:
                 _navigator.pushNamedAndRemoveUntil(

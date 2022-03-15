@@ -42,7 +42,7 @@ module.exports.signup_post = async (req, res) => {
   try {
     const user = await User.create({ email, password, username });
     const token = createToken(user._id);
-    res.status(201).json({ accessToken: token, user: user._id });
+    res.status(201).json({ accessToken: token, _id : user._id });
   } catch (err) {
     const error = handleErrors(err);
     res.status(400).json({ error });
@@ -54,9 +54,14 @@ module.exports.login_post = async (req, res) => {
   try {
     const user = await User.login(email, password);
     const token = createToken(user._id);
-    res.status(200).json({ accessToken: token, user: user._id });
+    res.status(200).json({ accessToken: token, _id : user._id });
   } catch (err) {
     const error = handleErrors(err);
     res.status(400).json({ error });
   }
+};
+
+module.exports.logout_get = (req, res) => {
+  const token = createToken('');
+  res.status(200).json({accessToken:token});
 };

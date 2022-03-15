@@ -7,6 +7,7 @@ const randomBetween = require("./miscellaneous");
 const options = { cors: { origin: "*" } };
 const io = require("socket.io")(httpServer, options);
 const authRoutes = require("./routes/authRoutes");
+const userRoutes = require("./routes/userRoutes");
 const mongoose = require("mongoose");
 const { requireAuth } = require("./middleware/authmiddleware");
 
@@ -33,6 +34,7 @@ app.use((req, res, next) => {
 
 // * Auth Routes here
 app.use(authRoutes);
+app.use(userRoutes);
 
 // * MongoDB Connection
 const dbURI = process.env.MONGODBURI;

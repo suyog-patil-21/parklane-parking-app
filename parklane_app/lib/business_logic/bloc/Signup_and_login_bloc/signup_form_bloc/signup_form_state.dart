@@ -6,7 +6,7 @@ class SignupFormState {
   final String password;
   bool get isValidPassword => password.length > 8;
   final String email;
-  bool get isValidEmail => EmailValidator.validate(email);
+  bool get isValidEmail => EmailValidator.validate(email.trim());
   final bool isvisible;
   final FormSubmissionStatus formStatus;
   SignupFormState(
