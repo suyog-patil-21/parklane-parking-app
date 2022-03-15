@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:parklane_app/presentation/screen/home_screen.dart';
 import '../screen/splash_screen.dart';
 import '../mobileui/mobile_login_intro_view.dart';
 import '../mobileui/mobile_login_signup_view.dart';
@@ -15,6 +16,9 @@ class AppRouter {
       case MapScreen.route:
         // * Map Screen Route : '/map-screen'
         return MaterialPageRoute(builder: (_) => MapScreen());
+      case HomeScreen.route:
+        // * Home Screen Route : '/home-screen'
+        return MaterialPageRoute(builder: (_) => HomeScreen());
       case LoginSignupScreen.route:
         // * LoginSignupSCreen Routes: '/auth'
         return MaterialPageRoute(builder: (_) => LoginSignupScreen());

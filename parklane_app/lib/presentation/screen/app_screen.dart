@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:parklane_app/presentation/screen/home_screen.dart';
 import '../../business_logic/bloc/authentication_bloc/authentication_bloc.dart';
 import '../../data/repository/auth_repository.dart';
 import '../router/app_routes.dart';
@@ -58,7 +59,7 @@ class _AppViewState extends State<AppView> {
             switch (state.status) {
               case AuthenticationStatus.authenticated:
                 _navigator.pushNamedAndRemoveUntil(
-                    MapScreen.route, (route) => false);
+                    HomeScreen.route, (route) => false);
                 break;
               case AuthenticationStatus.unauthenticated:
                 _navigator.pushNamedAndRemoveUntil(

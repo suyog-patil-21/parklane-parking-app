@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
+import 'package:parklane_app/data/models/user_model.dart';
 
 import '../../../data/repository/auth_repository.dart';
 import '../../../data/repository/user_repository.dart';

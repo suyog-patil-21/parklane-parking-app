@@ -19,17 +19,16 @@ class AuthRepository {
     // return UserModel.fromJson(rawData!);
   }
 
-  Future<UserModel> signup(
+  Future<User> signup(
       {required String username,
       required String email,
       required String password}) async {
     var rawData = await service.postSignUp(username, email, password);
     _controller.add(AuthenticationStatus.authenticated);
-    return UserModel.fromJson(rawData!);
+    return User(id: "dumep", accessToken: "newconnet");
   }
 
-// ! FIXME : Fix the authenticaiton part
-  // ! Check the user status
+  // ? Check the user status using stream
   Stream<AuthenticationStatus> get status async* {
     await Future<void>.delayed(const Duration(seconds: 1));
     yield AuthenticationStatus.unauthenticated;
