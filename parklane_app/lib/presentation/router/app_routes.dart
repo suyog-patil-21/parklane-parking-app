@@ -13,7 +13,7 @@ class AppRouter {
         // * Splash Screen Route : '/'
         return MaterialPageRoute(builder: (_) => const SplashScreen());
       case MapScreen.route:
-        // * Home Screen Route : '/map-screen'
+        // * Map Screen Route : '/map-screen'
         return MaterialPageRoute(builder: (_) => MapScreen());
       case LoginSignupScreen.route:
         // * LoginSignupSCreen Routes: '/auth'

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:parklane_app/presentation/widgets/floating_custom_map.dart';
 
 import '../widgets/bottom_search_bar.dart';
-import '../widgets/floating_custom_home.dart';
 
 class MobileMapView extends StatelessWidget {
   const MobileMapView({Key? key}) : super(key: key);
