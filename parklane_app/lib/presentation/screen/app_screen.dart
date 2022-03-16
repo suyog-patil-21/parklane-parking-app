@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:parklane_app/presentation/screen/home_screen.dart';
+import 'package:parklane_app/presentation/screen/splash_screen.dart';
 import '../../business_logic/bloc/authentication_bloc/authentication_bloc.dart';
 import '../../data/repository/auth_repository.dart';
 import '../router/app_routes.dart';
-import 'map_screen.dart';
 import 'login_signup_page.dart';
 
 import '../../constants/text_theme.dart';
@@ -62,6 +62,7 @@ class _AppViewState extends State<AppView> {
                     HomeScreen.route, (route) => false);
                 break;
               case AuthenticationStatus.unauthenticated:
+              case AuthenticationStatus.unknown:
                 _navigator.pushNamedAndRemoveUntil(
                     LoginSignupScreen.route, (route) => false);
                 break;
@@ -72,7 +73,7 @@ class _AppViewState extends State<AppView> {
           child: child,
         );
       },
-      // home: App(),
+      // home: HomeScreen(),
       onGenerateRoute: widget.appRouter.onGenerateRoute,
     );
   }

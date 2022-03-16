@@ -19,11 +19,6 @@ class SplashScreen extends StatelessWidget {
             'Parklane',
             style: Theme.of(context).textTheme.headline3,
           ),
-          TextButton(
-              onPressed: () {
-                Navigator.pop(context);
-              },
-              child: Text("go back"))
         ],
       )),
     );
