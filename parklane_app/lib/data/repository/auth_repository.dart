@@ -1,4 +1,6 @@
 import 'dart:async';
+import 'dart:convert';
+import 'package:parklane_app/constants/globals.dart';
 
 import '../models/user_model.dart';
 import '../provider/network_service.dart';
@@ -11,7 +13,9 @@ class AuthRepository {
   // ! FIXME  : For login and singnup response is going to be token so try using diffrent Token classs to store the token
 
   Future<void> login({required String email, required String password}) async {
-    // var rawData = await service.postLogin(email, password);
+    var rawData = await service.postLogin(email, password);
+    var temp = json.decode(rawData!) as Map<String, dynamic>;
+    Globals.accessToken = temp["accessToken"];
     await Future.delayed(
       const Duration(milliseconds: 300),
       () => _controller.add(AuthenticationStatus.authenticated),
@@ -19,13 +23,13 @@ class AuthRepository {
     // return UserModel.fromJson(rawData!);
   }
 
-  Future<User> signup(
+  Future<void> signup(
       {required String username,
       required String email,
       required String password}) async {
     var rawData = await service.postSignUp(username, email, password);
     _controller.add(AuthenticationStatus.authenticated);
-    return User(id: "dumep", accessToken: "newconnet");
+    // return User(id: "dumep");
   }
 
   // ? Check the user status using stream
@@ -39,6 +43,7 @@ class AuthRepository {
 
   // * Logout
   void logOut() {
+    Globals.accessToken = null;
     _controller.add(AuthenticationStatus.unauthenticated);
   }
 

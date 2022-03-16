@@ -32,10 +32,8 @@ class MobileHomeView extends StatelessWidget {
         body: BlocBuilder<AuthenticationBloc, AuthenticationState>(
           builder: (context, state) {
             if (state.status == AuthenticationStatus.authenticated) {
-              return Column(children: [
-                Text(state.user.id),
-                Text(state.user.accessToken)
-              ]);
+              return Column(
+                  children: [Text(state.user.id), Text(state.user.email!)]);
             }
             return const Text('User');
           },

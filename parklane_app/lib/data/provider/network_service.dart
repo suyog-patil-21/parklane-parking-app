@@ -35,13 +35,12 @@ class NetworkService {
     }
   }
 
-  Future<String?> getUser(String token) async {
-    Uri url = Uri.parse(baseUrl + "/getSelf");
-    // ! FIXME : Create function not properly written check afterwards
+  Future<String?> getCurrentUser(String token) async {
+    Uri url = Uri.parse(baseUrl + "/getCurrentUser");
     try {
-      final response = await http.post(url, headers: <String, String>{
-        "authentication": "Bearor " + token,
-      }, body: <String, dynamic>{});
+      final response = await http.get(url, headers: <String, String>{
+        "authorization": "Bearor " + token,
+      });
       return response.body;
     } catch (err) {
       print(err);

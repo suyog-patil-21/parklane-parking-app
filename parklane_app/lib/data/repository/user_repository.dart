@@ -1,6 +1,7 @@
 import 'dart:math';
 
 import 'package:equatable/equatable.dart';
+import 'package:parklane_app/constants/globals.dart';
 import 'package:parklane_app/data/models/user_model.dart';
 
 import '../provider/network_service.dart';
@@ -11,12 +12,10 @@ class UserRepository {
   User? _user;
   Future<User?> getUser() async {
     if (_user != null) return _user;
+    var user = await service.getCurrentUser(Globals.accessToken!);
     return Future.delayed(
       const Duration(milliseconds: 300),
-      () => _user = User(
-        id: Random().nextInt(10).toString(),
-        accessToken: 'token from the web',
-      ),
+      () => _user = User.fromJson(user!),
     );
   }
 }
