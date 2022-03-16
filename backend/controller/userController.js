@@ -2,8 +2,9 @@
 const User = require("../model/User");
 
 module.exports.getCurrentUser_get = async (req, res) => {
-  const _id = req.body.id;
-  if (!_id) res.status(400).json({ error: "no _id pass in the body" });
+  // * res.locals.tokenUserID = containes the Current token user id 
+  const _id = res.locals.tokenUserID;
+  if (!_id) res.status(401).json({ error: "Unauthorized" });
   try {
     const user = await User.findById(_id);
     if (user) {
@@ -13,7 +14,7 @@ module.exports.getCurrentUser_get = async (req, res) => {
     }
   } catch (err) {
     console.log("\x1b[31m", err);
-    // ! FIXME : try to check if their is error
+    // ! FIXME : debug try to check if their is error
     res.status(500).json({ error: err });
   }
 };
