@@ -23,7 +23,8 @@ class LoginFormBloc extends Bloc<LoginFormEvent, LoginFormState> {
       LoginSubmitedEvent event, Emitter<LoginFormState> emit) async {
     emit(state.copyWith(formStatus: FormSubmmitingStatus()));
     try {
-      await authRepository.login(email: state.email, password: state.password);
+      await authRepository.login(
+          email: state.email.trim(), password: state.password);
       emit(state.copyWith(formStatus: FormSubmmisionSuccessStatus()));
     } catch (e) {
       emit(state.copyWith(

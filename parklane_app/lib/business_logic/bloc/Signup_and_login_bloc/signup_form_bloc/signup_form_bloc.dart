@@ -24,8 +24,8 @@ class SignupFormBloc extends Bloc<SignupFormEvent, SignupFormState> {
     emit(state.copyWith(formStatus: FormSubmmitingStatus()));
     try {
       await authRepository.signup(
-          username: state.username,
-          email: state.email,
+          username: state.username.trim(),
+          email: state.email.trim(),
           password: state.password);
       emit(state.copyWith(formStatus: FormSubmmisionSuccessStatus()));
     } catch (e) {
