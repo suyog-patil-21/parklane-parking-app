@@ -20,7 +20,6 @@ class AuthRepository {
       const Duration(milliseconds: 300),
       () => _controller.add(AuthenticationStatus.authenticated),
     );
-    // return UserModel.fromJson(rawData!);
   }
 
   Future<void> signup(
@@ -28,8 +27,9 @@ class AuthRepository {
       required String email,
       required String password}) async {
     var rawData = await service.postSignUp(username, email, password);
+    var temp = json.decode(rawData!) as Map<String, dynamic>;
+    Globals.accessToken = temp["accessToken"];
     _controller.add(AuthenticationStatus.authenticated);
-    // return User(id: "dumep");
   }
 
   // ? Check the user status using stream
@@ -46,6 +46,4 @@ class AuthRepository {
     Globals.accessToken = null;
     _controller.add(AuthenticationStatus.unauthenticated);
   }
-
-  // TODO : Confirm signup
 }

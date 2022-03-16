@@ -41,6 +41,8 @@ dependencies:
   equatable: ^2.0.3
   http: ^0.13.4
   email_validator: ^2.0.1
+  hydrated_bloc: ^8.1.0
+  path_provider: ^2.0.9
 
 dev_dependencies:
   flutter_test:

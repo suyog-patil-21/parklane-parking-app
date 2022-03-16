@@ -2,8 +2,7 @@ import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-
-import 'package:google_fonts/google_fonts.dart';
+import 'package:hydrated_bloc/hydrated_bloc.dart';
 import 'package:parklane_app/business_logic/bloc/Signup_and_login_bloc/login_form_bloc/login_form_bloc.dart';
 import 'package:parklane_app/business_logic/bloc/Signup_and_login_bloc/signup_form_bloc/signup_form_bloc.dart';
 import 'package:parklane_app/business_logic/bloc/authentication_bloc/authentication_bloc.dart';
@@ -13,19 +12,27 @@ import 'package:parklane_app/data/repository/auth_repository.dart';
 import 'package:parklane_app/data/repository/user_repository.dart';
 import 'package:parklane_app/presentation/router/app_routes.dart';
 import 'package:parklane_app/presentation/screen/app_screen.dart';
-import 'constants/theme_color.dart' as My;
+import 'package:path_provider/path_provider.dart';
 
-void main() {
+void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  // For only Portrait mode
   SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
+  // For Transparent statusBar
   SystemChrome.setSystemUIOverlayStyle(
       const SystemUiOverlayStyle(statusBarColor: Colors.transparent));
-  runApp(MyApp(
-    authRepository: AuthRepository(),
-    userRepository: UserRepository(),
-    connectivity: Connectivity(),
-    appRouter: AppRouter(),
-  ));
+  // For Hydraded Storage
+  final storage = await HydratedStorage.build(
+      storageDirectory: await getApplicationDocumentsDirectory());
+  HydratedBlocOverrides.runZoned(
+    () => runApp(MyApp(
+      authRepository: AuthRepository(),
+      userRepository: UserRepository(),
+      connectivity: Connectivity(),
+      appRouter: AppRouter(),
+    )),
+    storage: storage,
+  );
 }
 
 class MyApp extends StatelessWidget {
