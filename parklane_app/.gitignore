@@ -48,3 +48,4 @@ app.*.map.json
 # myself
 linux
 web
+lib/secrets.dart

@@ -1,7 +1,27 @@
 {
-    "getUser":{
-        "username":"Custom Name",
-        "mobile":"290234234",
-        "token":"sdjfljasldjflksdjflkjskd"
-    }
+    "getUser": {
+        "username": "Custom Name",
+        "mobile": "290234234",
+        "token": "sdjfljasldjflksdjflkjskd"
+    },
+    "getParkingAreas": [
+        {
+            "id": 1,
+            "name": "Parking Area 1",
+            "totalCapacity": 20,
+            "locationCode": {
+                "lat": 18.5641718,
+                "long": 73.8404533
+            }
+        },
+        {
+            "id": 2,
+            "name": "Parking Area 2",
+            "totalCapacity": 4,
+            "locationCode": {
+                "lat": 18.6187067,
+                "long": 73.857895
+            }
+        }
+    ]
 }

@@ -17,9 +17,7 @@ class CustomFloatingButton extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           FloatingActionButton(
-            onPressed: () {
-              Navigator.of(context).pushNamed(SplashScreen.route);
-            },
+            onPressed: () {},
             child: Icon(Icons.ac_unit),
           ),
           Card(

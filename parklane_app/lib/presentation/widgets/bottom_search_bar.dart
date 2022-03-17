@@ -16,7 +16,7 @@ class CustomBottomSearchBar extends StatelessWidget {
       child: BottomAppBar(
         elevation: 8,
         child: Container(
-            padding: EdgeInsets.symmetric(vertical: 8, horizontal: 16),
+            padding: EdgeInsets.symmetric(vertical: 18, horizontal: 12),
             // alignment: Alignment.center,
             child: SafeArea(
               child: Row(children: [
@@ -53,7 +53,7 @@ class BottomSearchBarCustomClipper extends CustomClipper<Path> {
     path.lineTo(0, size.height);
     path.lineTo(size.width, size.height);
     path.lineTo(size.width, 0);
-    var roundheight = size.height * 0.3;
+    var roundheight = size.height * 0.35;
 
     path.quadraticBezierTo(
         size.width, roundheight, size.width - roundheight, roundheight);
