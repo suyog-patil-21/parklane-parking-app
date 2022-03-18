@@ -20,7 +20,7 @@ class CustomBottomSearchBar extends StatelessWidget {
             // alignment: Alignment.center,
             child: SafeArea(
               child: Row(children: [
-                Icon(Icons.search),
+                const Icon(Icons.search),
                 const SizedBox(
                   width: 10.0,
                 ),

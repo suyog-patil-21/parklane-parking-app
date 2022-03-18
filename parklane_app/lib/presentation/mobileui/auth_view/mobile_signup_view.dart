@@ -162,8 +162,8 @@ class MobileSignUpView extends StatelessWidget {
                     context.read<SignupFormBloc>().add(ToggleVisibility());
                   },
                   child: state.isvisible
-                      ? const Icon(Icons.visibility)
-                      : const Icon(Icons.visibility_off))));
+                      ? const Icon(Icons.visibility_off)
+                      : const Icon(Icons.visibility))));
     });
   }
 

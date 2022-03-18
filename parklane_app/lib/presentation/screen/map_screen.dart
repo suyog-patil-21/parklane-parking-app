@@ -19,9 +19,10 @@ class MapScreen extends StatelessWidget {
             if (state is InternetDisconnected) {
               ScaffoldMessenger.of(context)
                 ..hideCurrentSnackBar()
-                ..showSnackBar(const SnackBar(
+                ..showSnackBar(SnackBar(
+                  backgroundColor: Theme.of(context).errorColor,
                   padding: EdgeInsets.all(10),
-                  content: Text('Your Are Disconnected'),
+                  content: Text('You Are Disconnected'),
                 ));
             }
           },

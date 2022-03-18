@@ -163,8 +163,8 @@ class MobileLoginView extends StatelessWidget {
                       context.read<LoginFormBloc>().add(ToggleVisibility());
                     },
                     child: state.isvisible
-                        ? const Icon(Icons.visibility)
-                        : const Icon(Icons.visibility_off))));
+                        ? const Icon(Icons.visibility_off)
+                        : const Icon(Icons.visibility))));
       },
     );
   }

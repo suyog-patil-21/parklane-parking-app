@@ -17,16 +17,43 @@ class CustomFloatingButton extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           FloatingActionButton(
-            onPressed: () {},
-            child: Icon(Icons.ac_unit),
+            backgroundColor: Colors.white,
+            onPressed: () {
+              Navigator.pop(context);
+            },
+            child: const Icon(Icons.home_rounded, color: Colors.amber),
           ),
-          Card(
-            child: Container(
-              color: Colors.white,
-              height: 60,
-              width: screenSize.width * 0.24,
-            ),
-          )
+          FloatingActionButton.extended(
+              backgroundColor: Colors.white,
+              onPressed: null,
+              icon: Container(
+                color: Colors.black,
+                child: Icon(Icons.car_rental_rounded, color: Colors.white),
+              ),
+              label: Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      'My Vehicle',
+                      style: Theme.of(context).textTheme.bodySmall,
+                    ),
+                    Text(
+                      'MH12KD232'.toUpperCase(),
+                      style: Theme.of(context).textTheme.bodyMedium,
+                    ),
+                  ],
+                ),
+              ))
+          // Card(
+          //   child: Container(
+          //     color: Colors.white,
+          //     height: 60,
+          //     width: screenSize.width * 0.24,
+          //   ),
+          // )
         ],
       ),
     );
