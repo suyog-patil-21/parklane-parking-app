@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import '../../business_logic/cubit/internet_status_cubit/internet_cubit.dart';
 
 import '../desktopui/desktop_login_view.dart';
 import '../mobileui/mobile_login_intro_view.dart';
@@ -10,11 +12,9 @@ class LoginSignupScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-        // extendBodyBehindAppBar: true,
-        child: ResponsiveLayout(
+    return ResponsiveLayout(
       desktopBody: DesktopLoginView(),
       mobileBody: MobileLoginIntroView(),
-    ));
+    );
   }
 }

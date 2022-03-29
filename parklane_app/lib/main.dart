@@ -3,16 +3,18 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hydrated_bloc/hydrated_bloc.dart';
-import 'package:parklane_app/business_logic/bloc/Signup_and_login_bloc/login_form_bloc/login_form_bloc.dart';
-import 'package:parklane_app/business_logic/bloc/Signup_and_login_bloc/signup_form_bloc/signup_form_bloc.dart';
-import 'package:parklane_app/business_logic/bloc/authentication_bloc/authentication_bloc.dart';
-import 'package:parklane_app/business_logic/bloc/map/map_bloc.dart';
-import 'package:parklane_app/business_logic/cubit/internet_status_cubit/internet_cubit.dart';
-import 'package:parklane_app/business_logic/cubit/login_sign_switch_cubit/loginsignswitch_cubit.dart';
-import 'package:parklane_app/data/repository/auth_repository.dart';
-import 'package:parklane_app/data/repository/user_repository.dart';
-import 'package:parklane_app/presentation/router/app_routes.dart';
-import 'package:parklane_app/presentation/screen/app_screen.dart';
+import 'business_logic/bloc/Signup_and_login_bloc/login_form_bloc/login_form_bloc.dart';
+import 'business_logic/bloc/Signup_and_login_bloc/signup_form_bloc/signup_form_bloc.dart';
+import 'business_logic/bloc/authentication_bloc/authentication_bloc.dart';
+import 'business_logic/cubit/geolocation_cubit/geolocation_cubit.dart';
+import 'business_logic/cubit/internet_status_cubit/internet_cubit.dart';
+import 'business_logic/cubit/login_sign_switch_cubit/loginsignswitch_cubit.dart';
+import 'business_logic/utilities/app_bloc_observer.dart';
+import 'data/repository/auth_repository.dart';
+import 'data/repository/geolocation_repository.dart';
+import 'data/repository/user_repository.dart';
+import 'presentation/router/app_routes.dart';
+import 'presentation/screen/app_screen.dart';
 import 'package:path_provider/path_provider.dart';
 
 void main() async {
@@ -26,14 +28,15 @@ void main() async {
   final storage = await HydratedStorage.build(
       storageDirectory: await getApplicationDocumentsDirectory());
   HydratedBlocOverrides.runZoned(
-    () => runApp(MyApp(
-      authRepository: AuthRepository(),
-      userRepository: UserRepository(),
-      connectivity: Connectivity(),
-      appRouter: AppRouter(),
-    )),
-    storage: storage,
-  );
+      () => runApp(MyApp(
+            geolocationRepository: GeolocationRepository(),
+            authRepository: AuthRepository(),
+            userRepository: UserRepository(),
+            connectivity: Connectivity(),
+            appRouter: AppRouter(),
+          )),
+      storage: storage,
+      blocObserver: AppBlocOpebserver());
 }
 
 class MyApp extends StatelessWidget {
@@ -41,8 +44,10 @@ class MyApp extends StatelessWidget {
   final AppRouter appRouter;
   final AuthRepository authRepository;
   final UserRepository userRepository;
+  final GeolocationRepository geolocationRepository;
   const MyApp(
       {Key? key,
+      required this.geolocationRepository,
       required this.authRepository,
       required this.userRepository,
       required this.connectivity,
@@ -56,6 +61,8 @@ class MyApp extends StatelessWidget {
       providers: [
         RepositoryProvider<AuthRepository>.value(value: authRepository),
         RepositoryProvider<UserRepository>.value(value: userRepository),
+        RepositoryProvider<GeolocationRepository>.value(
+            value: geolocationRepository),
       ],
       child: MultiBlocProvider(
         providers: [
@@ -80,7 +87,9 @@ class MyApp extends StatelessWidget {
                 authRepository: RepositoryProvider.of<AuthRepository>(context)),
           ),
           BlocProvider(
-            create: (context) => MapBloc(),
+            create: (context) => GeolocationCubit(
+                geoRepository:
+                    RepositoryProvider.of<GeolocationRepository>(context)),
           ),
         ],
         child: AppView(appRouter: appRouter),

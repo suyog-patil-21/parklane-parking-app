@@ -1,11 +1,7 @@
-import 'dart:math';
-
-import 'package:equatable/equatable.dart';
-import 'package:parklane_app/constants/globals.dart';
-import 'package:parklane_app/data/models/user_model.dart';
+import '../../constants/globals.dart';
+import '../models/user_model.dart';
 
 import '../provider/network_service.dart';
-import 'auth_repository.dart';
 
 class UserRepository {
   NetworkService service = NetworkService();

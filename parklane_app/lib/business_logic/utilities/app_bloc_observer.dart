@@ -27,7 +27,7 @@ class AppBlocOpebserver extends BlocObserver {
 
   @override
   void onCreate(BlocBase bloc) {
-    // TODO: implement onCreate
+    print(bloc);
     super.onCreate(bloc);
   }
 

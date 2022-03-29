@@ -4,9 +4,13 @@
         "mobile": "290234234",
         "token": "sdjfljasldjflksdjflkjskd"
     },
-    "getParkingAreas": [
+    "getParkingArea": [
         {
             "id": 1,
+            "address": {
+                "pincode": 411041,
+                "city": "pune"
+            },
             "name": "Parking Area 1",
             "totalCapacity": 20,
             "locationCode": {
@@ -18,9 +22,39 @@
             "id": 2,
             "name": "Parking Area 2",
             "totalCapacity": 4,
+            "address": {
+                "pincode": 411041,
+                "city": "pune"
+            },
             "locationCode": {
                 "lat": 18.6187067,
                 "long": 73.857895
+            }
+        },
+        {
+            "id": 3,
+            "name": "Parking Area 3",
+            "address": {
+                "pincode": 411041,
+                "city": "pune"
+            },
+            "totalCapacity": 4,
+            "locationCode": {
+                "lat": 18.4479932,
+                "long": 73.8292506
+            }
+        },
+        {
+            "id": 4,
+            "name": "Parking Area 4",
+            "address": {
+                "pincode": 411041,
+                "city": "pune"
+            },
+            "totalCapacity": 16,
+            "locationCode": {
+                "lat": 18.4479593,
+                "long": 73.8294916
             }
         }
     ]

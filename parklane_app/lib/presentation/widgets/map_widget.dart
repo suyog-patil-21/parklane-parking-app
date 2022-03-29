@@ -1,19 +1,86 @@
+import 'dart:async';
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_map/flutter_map.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:latlong2/latlong.dart';
-import 'package:parklane_app/secrets.dart';
+import '../../data/provider/network_service.dart';
+import '../../secrets.dart';
 
-class MapWidget extends StatefulWidget {
-  MapWidget({Key? key, required this.screenSize}) : super(key: key);
+class MapWidget extends StatelessWidget {
+  MapWidget(
+      {Key? key,
+      required this.screenSize,
+      this.currentLocation,
+      this.mapController})
+      : super(key: key);
+  Position? currentLocation;
   Size screenSize;
-  @override
-  State<MapWidget> createState() => _MapWidgetState();
-}
+  MapController? mapController;
 
-class _MapWidgetState extends State<MapWidget> {
+  List<Marker> markers = [];
+  // @override
+  // void initState() {
+  //   // setState(() async {
+  //   //   await fetchMarkers();
+  //   // });
+  //   // controller = StreamController<int>.broadcast();
+  //   // subscription = controller.stream.listen((event) {
+  //   //   print(event);
+  //   // });
+  //   // controller.sink.addStream(getNumber());
+  //   super.initState();
+  // }
+
+  // ! FIXME : Rough Implementation of Stream
+  // late StreamSubscription<int> subscription;
+  // Stream<int> getNumber() async* {
+  //   Random ran = Random();
+  //   for (int i = 0; i < 100; i++) {
+  //     await Future.delayed(const Duration(milliseconds: 2000));
+  //     print(i);
+  //     yield ran.nextInt(100);
+  //   }
+  // }
+
+  // late StreamController<int> controller;
+  // @override
+  // void dispose() {
+  //   controller.close();
+  //   super.dispose();
+  // }
+
+  Future<void> fetchMarkers() async {
+    NetworkService service = NetworkService();
+    var list = await service.getParkingArea();
+    var markerlist = json.decode(list!);
+    for (var i in markerlist) {
+      print(i["name"] as String);
+      print(i["locationCode"]["lat"]);
+      markers.add(Marker(
+        width: 80.0,
+        height: 80.0,
+        point: LatLng(i["locationCode"]["lat"], i["locationCode"]["long"]),
+        builder: (ctx) => GestureDetector(
+          onTap: () {
+            mapMarkerBottomSheet(ctx);
+          },
+          child: const Icon(
+            Icons.location_on_rounded,
+            color: Colors.amber,
+            size: 35,
+          ),
+        ),
+      ));
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return FlutterMap(
+      mapController: mapController,
       options: MapOptions(
           center: LatLng(18.5641718, 73.8404533),
           zoom: 15.0,
@@ -32,22 +99,26 @@ class _MapWidgetState extends State<MapWidget> {
         ),
         MarkerLayerOptions(
           markers: [
-            Marker(
-              width: 80.0,
-              height: 80.0,
-              point: LatLng(18.5641718, 73.8404533),
-              builder: (ctx) => const Icon(
-                Icons.my_location_rounded,
-                color: Colors.blue,
+            // Current Location Marker
+            if (currentLocation != null)
+              Marker(
+                width: 80.0,
+                height: 80.0,
+                point: LatLng(
+                    currentLocation!.latitude, currentLocation!.longitude),
+                builder: (ctx) => const Icon(
+                  Icons.my_location_rounded,
+                  color: Colors.blue,
+                ),
               ),
-            ),
+            // ...markers,
             Marker(
               width: 80.0,
               height: 80.0,
               point: LatLng(18.6187067, 73.857895),
               builder: (ctx) => GestureDetector(
                 onTap: () {
-                  MapMarkerBottomSheet(context);
+                  mapMarkerBottomSheet(context);
                 },
                 child: const Icon(
                   Icons.location_on_rounded,
@@ -56,13 +127,23 @@ class _MapWidgetState extends State<MapWidget> {
                 ),
               ),
             ),
+            // Marker(
+            //     width: 80.0,
+            //     height: 80.0,
+            //     point: LatLng(18.6187067, 73.857895),
+            //     builder: (ctx) => Container(
+            //           color: Colors.blueAccent,
+            //           height: 30,
+            //           width: 40,
+            //           child: Text(state.toString()),
+            //         )),
           ],
         ),
       ],
     );
   }
 
-  void MapMarkerBottomSheet(BuildContext context) {
+  void mapMarkerBottomSheet(BuildContext context) {
     Scaffold.of(context).showBottomSheet(
       (context) {
         return Column(
@@ -71,8 +152,8 @@ class _MapWidgetState extends State<MapWidget> {
               padding: const EdgeInsets.symmetric(
                 vertical: 12.0,
               ),
-              height: widget.screenSize.height * 0.3,
-              width: widget.screenSize.width * 0.9,
+              height: screenSize.height * 0.3,
+              width: screenSize.width * 0.9,
               // color: Colors.grey,
               child: Card(
                 elevation: 0,
@@ -91,17 +172,17 @@ class _MapWidgetState extends State<MapWidget> {
               'Parling address here',
               style: Theme.of(context).textTheme.overline,
             ),
-            SizedBox(
+            const SizedBox(
               height: 20.0,
             ),
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Spacer(
+                const Spacer(
                   flex: 2,
                 ),
                 Row(
-                  children: [
+                  children: const [
                     Icon(Icons.car_rental),
                     SizedBox(
                       width: 6,
@@ -109,9 +190,9 @@ class _MapWidgetState extends State<MapWidget> {
                     Text('40'),
                   ],
                 ),
-                Spacer(),
+                const Spacer(),
                 Row(
-                  children: [
+                  children: const [
                     Icon(Icons.monetization_on_rounded),
                     SizedBox(
                       width: 6,
@@ -119,7 +200,7 @@ class _MapWidgetState extends State<MapWidget> {
                     Text('20/hr'),
                   ],
                 ),
-                Spacer(
+                const Spacer(
                   flex: 2,
                 ),
               ],
@@ -128,8 +209,7 @@ class _MapWidgetState extends State<MapWidget> {
         );
       },
       constraints: BoxConstraints(
-          minWidth: widget.screenSize.width,
-          maxHeight: widget.screenSize.height * 0.7),
+          minWidth: screenSize.width, maxHeight: screenSize.height * 0.7),
       // backgroundColor: Colors.lightBlue,
     );
   }

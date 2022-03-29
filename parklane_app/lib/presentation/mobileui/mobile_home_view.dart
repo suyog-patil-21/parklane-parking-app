@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:parklane_app/business_logic/bloc/authentication_bloc/authentication_bloc.dart';
-import 'package:parklane_app/data/repository/auth_repository.dart';
-import 'package:parklane_app/presentation/screen/map_screen.dart';
-import 'package:parklane_app/presentation/widgets/gobals/home_screen_button_widget.dart';
+import '../../business_logic/bloc/authentication_bloc/authentication_bloc.dart';
+import '../../data/repository/auth_repository.dart';
+import '../screen/map_screen.dart';
+import '../widgets/gobals/home_screen_button_widget.dart';
 
 class MobileHomeView extends StatelessWidget {
   const MobileHomeView({Key? key}) : super(key: key);

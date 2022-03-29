@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import '../../business_logic/cubit/internet_status_cubit/internet_cubit.dart';
 import 'auth_view/mobile_login_view.dart';
 import 'auth_view/mobile_signup_view.dart';
 

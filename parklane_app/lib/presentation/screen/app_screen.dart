@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:parklane_app/presentation/screen/home_screen.dart';
-import 'package:parklane_app/presentation/screen/splash_screen.dart';
+import 'home_screen.dart';
 import '../../business_logic/bloc/authentication_bloc/authentication_bloc.dart';
+import '../../constants/constant_shape_constrains.dart';
 import '../../data/repository/auth_repository.dart';
 import '../router/app_routes.dart';
 import 'login_signup_page.dart';
@@ -28,31 +28,24 @@ class _AppViewState extends State<AppView> {
       navigatorKey: _navigatorKey,
       title: 'Parklane',
       theme: ThemeData(
-        primarySwatch: Colors.amber,
-        bottomSheetTheme: BottomSheetThemeData(
+        dialogTheme: const DialogTheme(
             shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(24))),
-        elevatedButtonTheme: ElevatedButtonThemeData(
-            style: ButtonStyle(
-                shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-                    RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(12.0),
-        )))),
-        outlinedButtonTheme: OutlinedButtonThemeData(
-            style: ButtonStyle(
-                shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-                    RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(12.0),
-        )))),
+                borderRadius: BorderRadius.all(Radius.circular(24)))),
+        primarySwatch: Colors.amber,
+        bottomSheetTheme: BottomSheetThemeData(shape: customShpaeUIElements),
+        textButtonTheme:
+            TextButtonThemeData(style: ButtonStyle(shape: buttonShape)),
+        elevatedButtonTheme:
+            ElevatedButtonThemeData(style: ButtonStyle(shape: buttonShape)),
+        outlinedButtonTheme:
+            OutlinedButtonThemeData(style: ButtonStyle(shape: buttonShape)),
         floatingActionButtonTheme: const FloatingActionButtonThemeData(
             shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.all(Radius.circular(12)))),
-        cardTheme: CardTheme(
-            elevation: 8,
-            shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(24))),
+        cardTheme: CardTheme(elevation: 8, shape: customShpaeUIElements),
         textTheme: textTheme,
       ),
+      // ! comment builder property below if working on Specific Screen
       builder: (context, child) {
         return BlocListener<AuthenticationBloc, AuthenticationState>(
           listener: ((context, state) {
@@ -73,7 +66,7 @@ class _AppViewState extends State<AppView> {
           child: child,
         );
       },
-      // home: HomeScreen(),
+      // home: MapScreen(),
       onGenerateRoute: widget.appRouter.onGenerateRoute,
     );
   }
