@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hydrated_bloc/hydrated_bloc.dart';
+import 'business_logic/cubit/location_marker_cubit/location_marker_cubit.dart';
 import 'business_logic/bloc/Signup_and_login_bloc/login_form_bloc/login_form_bloc.dart';
 import 'business_logic/bloc/Signup_and_login_bloc/signup_form_bloc/signup_form_bloc.dart';
 import 'business_logic/bloc/authentication_bloc/authentication_bloc.dart';
@@ -12,6 +13,7 @@ import 'business_logic/cubit/login_sign_switch_cubit/loginsignswitch_cubit.dart'
 import 'business_logic/utilities/app_bloc_observer.dart';
 import 'data/repository/auth_repository.dart';
 import 'data/repository/geolocation_repository.dart';
+import 'data/repository/location_repository.dart';
 import 'data/repository/user_repository.dart';
 import 'presentation/router/app_routes.dart';
 import 'presentation/screen/app_screen.dart';
@@ -29,6 +31,7 @@ void main() async {
       storageDirectory: await getApplicationDocumentsDirectory());
   HydratedBlocOverrides.runZoned(
       () => runApp(MyApp(
+            locationRepository: LocationRepository(),
             geolocationRepository: GeolocationRepository(),
             authRepository: AuthRepository(),
             userRepository: UserRepository(),
@@ -45,8 +48,10 @@ class MyApp extends StatelessWidget {
   final AuthRepository authRepository;
   final UserRepository userRepository;
   final GeolocationRepository geolocationRepository;
+  final LocationRepository locationRepository;
   const MyApp(
       {Key? key,
+      required this.locationRepository,
       required this.geolocationRepository,
       required this.authRepository,
       required this.userRepository,
@@ -63,6 +68,7 @@ class MyApp extends StatelessWidget {
         RepositoryProvider<UserRepository>.value(value: userRepository),
         RepositoryProvider<GeolocationRepository>.value(
             value: geolocationRepository),
+        RepositoryProvider<LocationRepository>.value(value: locationRepository),
       ],
       child: MultiBlocProvider(
         providers: [
@@ -90,6 +96,11 @@ class MyApp extends StatelessWidget {
             create: (context) => GeolocationCubit(
                 geoRepository:
                     RepositoryProvider.of<GeolocationRepository>(context)),
+          ),
+          BlocProvider(
+            create: (context) => LocationMarkerCubit(
+                locationRepository:
+                    RepositoryProvider.of<LocationRepository>(context)),
           ),
         ],
         child: AppView(appRouter: appRouter),

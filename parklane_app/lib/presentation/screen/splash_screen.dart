@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import '../widgets/gobals/responsive_layout.dart';
 
 class SplashScreen extends StatelessWidget {
   static const String route = '/';

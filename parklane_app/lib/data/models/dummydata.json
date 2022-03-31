@@ -9,7 +9,7 @@
             "id": 1,
             "address": {
                 "pincode": 411041,
-                "city": "pune"
+                "city": "pune city,pune"
             },
             "name": "Parking Area 1",
             "totalCapacity": 20,
@@ -24,7 +24,7 @@
             "totalCapacity": 4,
             "address": {
                 "pincode": 411041,
-                "city": "pune"
+                "city": "Ambegoan,pune"
             },
             "locationCode": {
                 "lat": 18.6187067,
@@ -36,7 +36,7 @@
             "name": "Parking Area 3",
             "address": {
                 "pincode": 411041,
-                "city": "pune"
+                "city": "Dhayari,pune"
             },
             "totalCapacity": 4,
             "locationCode": {
@@ -49,7 +49,7 @@
             "name": "Parking Area 4",
             "address": {
                 "pincode": 411041,
-                "city": "pune"
+                "city": "wakad,pune"
             },
             "totalCapacity": 16,
             "locationCode": {

@@ -6,6 +6,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:latlong2/latlong.dart';
+import '../../business_logic/cubit/location_marker_cubit/location_marker_cubit.dart';
+import '../../data/models/location_model.dart';
 import '../../data/provider/network_service.dart';
 import '../../secrets.dart';
 
@@ -13,14 +15,15 @@ class MapWidget extends StatelessWidget {
   MapWidget(
       {Key? key,
       required this.screenSize,
+      required this.parkingLocations,
       this.currentLocation,
       this.mapController})
       : super(key: key);
   Position? currentLocation;
   Size screenSize;
   MapController? mapController;
-
-  List<Marker> markers = [];
+  List<LocationModel> parkingLocations;
+  final List<Marker> _markers = [];
   // @override
   // void initState() {
   //   // setState(() async {
@@ -52,33 +55,24 @@ class MapWidget extends StatelessWidget {
   //   super.dispose();
   // }
 
-  Future<void> fetchMarkers() async {
-    NetworkService service = NetworkService();
-    var list = await service.getParkingArea();
-    var markerlist = json.decode(list!);
-    for (var i in markerlist) {
-      print(i["name"] as String);
-      print(i["locationCode"]["lat"]);
-      markers.add(Marker(
-        width: 80.0,
-        height: 80.0,
-        point: LatLng(i["locationCode"]["lat"], i["locationCode"]["long"]),
-        builder: (ctx) => GestureDetector(
-          onTap: () {
-            mapMarkerBottomSheet(ctx);
-          },
-          child: const Icon(
-            Icons.location_on_rounded,
-            color: Colors.amber,
-            size: 35,
-          ),
-        ),
-      ));
-    }
-  }
-
   @override
   Widget build(BuildContext context) {
+    final markersProvider =
+        BlocProvider.of<LocationMarkerCubit>(context, listen: true);
+    for (var element in parkingLocations) {
+      _markers.add(Marker(
+          point: LatLng(element.locationCode.lat, element.locationCode.long),
+          builder: (ctx) => GestureDetector(
+                onTap: () {
+                  markersProvider.selectLocation(parkingLocations, element);
+                },
+                child: const Icon(
+                  Icons.location_on_rounded,
+                  color: Colors.orangeAccent,
+                  size: 35,
+                ),
+              )));
+    }
     return FlutterMap(
       mapController: mapController,
       options: MapOptions(
@@ -111,14 +105,14 @@ class MapWidget extends StatelessWidget {
                   color: Colors.blue,
                 ),
               ),
-            // ...markers,
+            ..._markers,
             Marker(
               width: 80.0,
               height: 80.0,
               point: LatLng(18.6187067, 73.857895),
               builder: (ctx) => GestureDetector(
                 onTap: () {
-                  mapMarkerBottomSheet(context);
+                  // mapMarkerBottomSheet(context);
                 },
                 child: const Icon(
                   Icons.location_on_rounded,
@@ -140,77 +134,6 @@ class MapWidget extends StatelessWidget {
           ],
         ),
       ],
-    );
-  }
-
-  void mapMarkerBottomSheet(BuildContext context) {
-    Scaffold.of(context).showBottomSheet(
-      (context) {
-        return Column(
-          children: [
-            Container(
-              padding: const EdgeInsets.symmetric(
-                vertical: 12.0,
-              ),
-              height: screenSize.height * 0.3,
-              width: screenSize.width * 0.9,
-              // color: Colors.grey,
-              child: Card(
-                elevation: 0,
-                color: Colors.grey.shade300,
-                child: Placeholder(color: Theme.of(context).backgroundColor),
-              ),
-            ),
-            const SizedBox(
-              height: 10.0,
-            ),
-            Text(
-              'Parling Name',
-              style: Theme.of(context).textTheme.headline4,
-            ),
-            Text(
-              'Parling address here',
-              style: Theme.of(context).textTheme.overline,
-            ),
-            const SizedBox(
-              height: 20.0,
-            ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                const Spacer(
-                  flex: 2,
-                ),
-                Row(
-                  children: const [
-                    Icon(Icons.car_rental),
-                    SizedBox(
-                      width: 6,
-                    ),
-                    Text('40'),
-                  ],
-                ),
-                const Spacer(),
-                Row(
-                  children: const [
-                    Icon(Icons.monetization_on_rounded),
-                    SizedBox(
-                      width: 6,
-                    ),
-                    Text('20/hr'),
-                  ],
-                ),
-                const Spacer(
-                  flex: 2,
-                ),
-              ],
-            ),
-          ],
-        );
-      },
-      constraints: BoxConstraints(
-          minWidth: screenSize.width, maxHeight: screenSize.height * 0.7),
-      // backgroundColor: Colors.lightBlue,
     );
   }
 }

@@ -1,13 +1,9 @@
 import 'package:flutter/material.dart';
-import '../screen/splash_screen.dart';
 
 class CustomFloatingButton extends StatelessWidget {
   const CustomFloatingButton({
     Key? key,
-    required this.screenSize,
   }) : super(key: key);
-
-  final Size screenSize;
 
   @override
   Widget build(BuildContext context) {
@@ -47,13 +43,6 @@ class CustomFloatingButton extends StatelessWidget {
                   ],
                 ),
               ))
-          // Card(
-          //   child: Container(
-          //     color: Colors.white,
-          //     height: 60,
-          //     width: screenSize.width * 0.24,
-          //   ),
-          // )
         ],
       ),
     );
