@@ -20,11 +20,11 @@ class AuthenticationState extends Equatable {
   @override
   List<Object> get props => [status, user];
 
-  Map<String, dynamic> toMap() {
+  Map<String, dynamic> toCustomMap() {
     return {'user': user.toMap(), 'accessToken': Globals.accessToken};
   }
 
-  factory AuthenticationState.fromMap(Map<String, dynamic> map) {
+  factory AuthenticationState.fromCustomMap(Map<String, dynamic> map) {
     // To Store the AccessToken
     Globals.accessToken = map['accessToken'];
     return AuthenticationState.authenticated(
@@ -32,8 +32,8 @@ class AuthenticationState extends Equatable {
     );
   }
 
-  String toJson() => json.encode(toMap());
+  String toJson() => json.encode(toCustomMap());
 
   factory AuthenticationState.fromJson(String source) =>
-      AuthenticationState.fromMap(json.decode(source));
+      AuthenticationState.fromCustomMap(json.decode(source));
 }

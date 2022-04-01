@@ -1,9 +1,11 @@
 import 'dart:async';
+import 'dart:convert';
 
-import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
-import 'package:parklane_app/data/models/user_model.dart';
+import 'package:hydrated_bloc/hydrated_bloc.dart';
 
+import '../../../constants/globals.dart';
+import '../../../data/models/user_model.dart';
 import '../../../data/repository/auth_repository.dart';
 import '../../../data/repository/user_repository.dart';
 
@@ -11,7 +13,7 @@ part 'authentication_event.dart';
 part 'authentication_state.dart';
 
 class AuthenticationBloc
-    extends Bloc<AuthenticationEvent, AuthenticationState> {
+    extends HydratedBloc<AuthenticationEvent, AuthenticationState> {
   AuthenticationBloc({
     required AuthRepository authenticationRepository,
     required UserRepository userRepository,
@@ -68,5 +70,25 @@ class AuthenticationBloc
     } catch (_) {
       return null;
     }
+  }
+
+  @override
+  AuthenticationState? fromJson(Map<String, dynamic> json) {
+    if (json.isNotEmpty) {
+      _authenticationRepository.localStorageLogin();
+      return AuthenticationState.fromCustomMap(json);
+    }
+    return const AuthenticationState.unauthenticated();
+  }
+
+  @override
+  Map<String, dynamic>? toJson(AuthenticationState state) {
+    if (state.status == AuthenticationStatus.unauthenticated) {
+      return <String, dynamic>{};
+    }
+    if (state.status == AuthenticationStatus.authenticated) {
+      return state.toCustomMap();
+    }
+    return null;
   }
 }

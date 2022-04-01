@@ -7,6 +7,7 @@ import '../provider/network_service.dart';
 enum AuthenticationStatus { unknown, authenticated, unauthenticated }
 
 class AuthRepository {
+  // TODO : After token Expire Handle the
   NetworkService service = NetworkService();
   final _controller = StreamController<AuthenticationStatus>();
   Future<void> login({required String email, required String password}) async {
@@ -34,6 +35,10 @@ class AuthRepository {
     await Future<void>.delayed(const Duration(seconds: 1));
     yield AuthenticationStatus.unauthenticated;
     yield* _controller.stream;
+  }
+
+  void localStorageLogin() {
+    _controller.sink.add(AuthenticationStatus.authenticated);
   }
 
   void dispose() => _controller.close();

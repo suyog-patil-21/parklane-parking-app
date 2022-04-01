@@ -25,7 +25,7 @@ class NetworkService {
         }
       }
     } on SocketException {
-      throw CustomError("No Internet Connection");
+      throw CustomError("Server Error");
     }
   }
 
@@ -49,7 +49,7 @@ class NetworkService {
         throw CustomError(error);
       }
     } on SocketException {
-      throw CustomError("No Internet Connection");
+      throw CustomError("Server Error");
     }
   }
 
