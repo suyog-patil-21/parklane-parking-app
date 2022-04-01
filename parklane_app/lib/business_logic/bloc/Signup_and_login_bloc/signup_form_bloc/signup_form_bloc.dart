@@ -1,5 +1,6 @@
 import 'package:bloc/bloc.dart';
 import 'package:email_validator/email_validator.dart';
+import 'package:equatable/equatable.dart';
 import 'package:meta/meta.dart';
 import '../../../../data/repository/auth_repository.dart';
 import '../form_submission_status.dart';
@@ -8,7 +9,8 @@ part 'signup_form_state.dart';
 
 class SignupFormBloc extends Bloc<SignupFormEvent, SignupFormState> {
   AuthRepository authRepository;
-  SignupFormBloc({required this.authRepository}) : super(SignupFormState()) {
+  SignupFormBloc({required this.authRepository})
+      : super(const SignupFormState()) {
     on<SignupUsernameChangeEvent>(
         (event, emit) => emit(state.copyWith(username: event.username)));
     on<SigupEmailChangeEvent>(
@@ -16,8 +18,11 @@ class SignupFormBloc extends Bloc<SignupFormEvent, SignupFormState> {
     on<SignupPasswordChangeEvent>(
         ((event, emit) => emit(state.copyWith(password: event.password))));
     on<SignupSubmitedEvent>(_onSignupSubmitEvent);
-    on<ToggleVisibility>(
+    on<ToggleSignupVisibility>(
         (event, emit) => emit(state.copyWith(isvisible: !state.isvisible)));
+    on<SignupInitEvent>((event, emit) {
+      emit(state.copyWith(formStatus: const InitialFormStatus()));
+    });
   }
 
   void _onSignupSubmitEvent(event, emit) async {
@@ -28,9 +33,10 @@ class SignupFormBloc extends Bloc<SignupFormEvent, SignupFormState> {
           email: state.email.trim(),
           password: state.password);
       emit(state.copyWith(formStatus: FormSubmmisionSuccessStatus()));
-    } catch (e) {
+    } catch (err) {
       emit(state.copyWith(
-          formStatus: FormSubmissionFailedStatus(e as Exception)));
+          formStatus:
+              FormSubmissionFailedStatus(errorMessage: err.toString())));
     }
   }
 }

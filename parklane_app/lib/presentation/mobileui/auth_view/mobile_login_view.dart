@@ -14,111 +14,131 @@ class MobileLoginView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final Size screenSize = MediaQuery.of(context).size;
-    return Scaffold(
-      extendBodyBehindAppBar: true,
-      appBar: AppBar(
-        elevation: 0,
-        leading: IconButton(
-          icon: const Icon(
-            Icons.arrow_back_ios_new,
-          ),
-          onPressed: () {
-            Navigator.pop(context);
-          },
-        ),
-        backgroundColor: Colors.transparent,
-      ),
-      body: SingleChildScrollView(
-          child: Column(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          Container(
-              height: screenSize.height * 0.5,
-              width: double.infinity,
-              child: ClipPath(
-                clipper: LoginWaveUiDesignClipper(),
-                child: Stack(
-                  children: [
-                    SvgPicture.asset(
-                      'assets/svgs/intro_screen.svg',
-                      fit: BoxFit.fitWidth,
-                    ),
-                    Container(
-                      // color: Colors.amber.shade200,
-                      width: double.infinity,
-                      alignment: Alignment.centerLeft,
-                      padding: const EdgeInsets.symmetric(
-                          horizontal: 22, vertical: 6),
-                      height: screenSize.height * 0.5,
-                      child: Text(
-                        'Welcome\nBack',
-                        style: Theme.of(context).textTheme.headline4,
-                      ),
-                    ),
+    return BlocListener<LoginFormBloc, LoginFormState>(
+      listener: (context, state) {
+        final errorStatus = state.formStatus;
+        if (errorStatus is FormSubmissionFailedStatus) {
+          showDialog(
+              context: context,
+              builder: (BuildContext context) {
+                return AlertDialog(
+                  title: const Text('Error'),
+                  content: Text(errorStatus.errorMessage),
+                  actions: [
+                    TextButton(
+                        onPressed: () {
+                          context.read<LoginFormBloc>().add(LoginInitEvent());
+                          Navigator.pop(context);
+                        },
+                        child: const Text('OK'))
                   ],
-                ),
-              )),
-          Align(
-              alignment: Alignment.bottomCenter,
-              child: Form(
-                key: _loginFormKey,
-                child: Container(
-                  margin: const EdgeInsets.all(20),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    mainAxisAlignment: MainAxisAlignment.end,
+                );
+              });
+        }
+      },
+      child: Scaffold(
+        extendBodyBehindAppBar: true,
+        appBar: AppBar(
+          elevation: 0,
+          leading: IconButton(
+            icon: const Icon(
+              Icons.arrow_back_ios_new,
+            ),
+            onPressed: () {
+              Navigator.pop(context);
+            },
+          ),
+          backgroundColor: Colors.transparent,
+        ),
+        body: SingleChildScrollView(
+            child: Column(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Container(
+                height: screenSize.height * 0.5,
+                width: double.infinity,
+                child: ClipPath(
+                  clipper: LoginWaveUiDesignClipper(),
+                  child: Stack(
                     children: [
-                      _emailInputField(),
-                      const SizedBox(
-                        height: 10,
+                      SvgPicture.asset(
+                        'assets/svgs/intro_screen.svg',
+                        fit: BoxFit.fitWidth,
                       ),
-                      _passwordInputField(),
-                      const SizedBox(
-                        height: 5,
+                      Container(
+                        // color: Colors.amber.shade200,
+                        width: double.infinity,
+                        alignment: Alignment.centerLeft,
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 22, vertical: 6),
+                        height: screenSize.height * 0.5,
+                        child: Text(
+                          'Welcome\nBack',
+                          style: Theme.of(context).textTheme.headline4,
+                        ),
                       ),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.end,
-                        children: const [
-                          Text('Forget Password?'),
-                        ],
-                      ),
-                      const SizedBox(
-                        height: 25,
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: _loginSubmitButton(screenSize),
-                      ),
-                      const SizedBox(
-                        height: 15,
-                      ),
-                      const OrDividerForm(),
-                      const SizedBox(
-                        height: 15,
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: OutlinedButton(
-                            style: OutlinedButton.styleFrom(
-                                side: BorderSide(
-                                    width: 2,
-                                    color:
-                                        Theme.of(context).colorScheme.primary),
-                                minimumSize: Size(screenSize.width - 0.1, 50)),
-                            onPressed: () {
-                              BlocProvider.of<LoginSignupUISwitchCubit>(context)
-                                  .switchToSignUp();
-                            },
-                            child: const Text(
-                              'Sign Up',
-                            )),
-                      )
                     ],
                   ),
-                ),
-              ))
-        ],
-      )),
+                )),
+            Align(
+                alignment: Alignment.bottomCenter,
+                child: Form(
+                  key: _loginFormKey,
+                  child: Container(
+                    margin: const EdgeInsets.all(20),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      children: [
+                        _emailInputField(),
+                        const SizedBox(
+                          height: 10,
+                        ),
+                        _passwordInputField(),
+                        const SizedBox(
+                          height: 5,
+                        ),
+                        const SizedBox(
+                          height: 25,
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: _loginSubmitButton(screenSize),
+                        ),
+                        const SizedBox(
+                          height: 15,
+                        ),
+                        const OrDividerForm(),
+                        const SizedBox(
+                          height: 15,
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: OutlinedButton(
+                              style: OutlinedButton.styleFrom(
+                                  side: BorderSide(
+                                      width: 2,
+                                      color: Theme.of(context)
+                                          .colorScheme
+                                          .primary),
+                                  minimumSize:
+                                      Size(screenSize.width - 0.1, 50)),
+                              onPressed: () {
+                                BlocProvider.of<LoginSignupUISwitchCubit>(
+                                        context)
+                                    .switchToSignUp();
+                              },
+                              child: const Text(
+                                'Sign Up',
+                              )),
+                        )
+                      ],
+                    ),
+                  ),
+                ))
+          ],
+        )),
+      ),
     );
   }
 
@@ -160,7 +180,9 @@ class MobileLoginView extends StatelessWidget {
                 hintText: 'Enter your Password',
                 suffixIcon: GestureDetector(
                     onTap: () {
-                      context.read<LoginFormBloc>().add(ToggleVisibility());
+                      context
+                          .read<LoginFormBloc>()
+                          .add(ToggleLoginVisibility());
                     },
                     child: state.isvisible
                         ? const Icon(Icons.visibility_off)
@@ -173,16 +195,19 @@ class MobileLoginView extends StatelessWidget {
     return BlocBuilder<LoginFormBloc, LoginFormState>(
       builder: (context, state) {
         return TextFormField(
-          validator: (value) =>
-              state.isValidEmail ? null : 'Enter a valid email',
-          onChanged: (value) => context
-              .read<LoginFormBloc>()
-              .add(LoginEmailChangeEvent(email: value)),
-          decoration: const InputDecoration(
-              prefixIcon: Icon(Icons.mail),
-              hintText: 'Enter your Email',
-              suffixIcon: Icon(Icons.check)),
-        );
+            validator: (value) =>
+                state.isValidEmail ? null : 'Enter a valid email',
+            onChanged: (value) => context
+                .read<LoginFormBloc>()
+                .add(LoginEmailChangeEvent(email: value)),
+            decoration: InputDecoration(
+                prefixIcon: const Icon(Icons.mail),
+                hintText: 'Enter your Email',
+                suffixIcon: state.isValidEmail
+                    ? const Icon(
+                        Icons.check,
+                      )
+                    : null));
       },
     );
   }

@@ -13,6 +13,6 @@ class FormSubmmitingStatus extends FormSubmissionStatus {}
 class FormSubmmisionSuccessStatus extends FormSubmissionStatus {}
 
 class FormSubmissionFailedStatus extends FormSubmissionStatus {
-  final Exception exception;
-  FormSubmissionFailedStatus({required this.exception});
+  final String errorMessage;
+  const FormSubmissionFailedStatus({required this.errorMessage});
 }

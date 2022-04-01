@@ -1,8 +1,7 @@
 import 'dart:async';
 import 'dart:convert';
-import 'package:parklane_app/constants/globals.dart';
 
-import '../models/user_model.dart';
+import '../../constants/globals.dart';
 import '../provider/network_service.dart';
 
 enum AuthenticationStatus { unknown, authenticated, unauthenticated }
@@ -10,12 +9,10 @@ enum AuthenticationStatus { unknown, authenticated, unauthenticated }
 class AuthRepository {
   NetworkService service = NetworkService();
   final _controller = StreamController<AuthenticationStatus>();
-  // ! FIXME  : For login and singnup response is going to be token so try using diffrent Token classs to store the token
-
   Future<void> login({required String email, required String password}) async {
-    var rawData = await service.postLogin(email, password);
-    var temp = json.decode(rawData!) as Map<String, dynamic>;
-    Globals.accessToken = temp["accessToken"];
+    final Map<String, dynamic>? token =
+        await service.postLogin(email, password);
+    Globals.accessToken = token!["accessToken"];
     await Future.delayed(
       const Duration(milliseconds: 300),
       () => _controller.add(AuthenticationStatus.authenticated),
@@ -26,9 +23,9 @@ class AuthRepository {
       {required String username,
       required String email,
       required String password}) async {
-    var rawData = await service.postSignUp(username, email, password);
-    var temp = json.decode(rawData!) as Map<String, dynamic>;
-    Globals.accessToken = temp["accessToken"];
+    final Map<String, dynamic>? token =
+        await service.postSignUp(username, email, password);
+    Globals.accessToken = token!["accessToken"];
     _controller.add(AuthenticationStatus.authenticated);
   }
 

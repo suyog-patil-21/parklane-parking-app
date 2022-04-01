@@ -1,13 +1,13 @@
 part of 'login_form_bloc.dart';
 
-class LoginFormState {
+class LoginFormState extends Equatable {
   final String password;
   bool get isValidPassword => password.isNotEmpty;
   final String email;
   bool get isValidEmail => EmailValidator.validate(email);
   final bool isvisible;
   final FormSubmissionStatus formStatus;
-  LoginFormState(
+  const LoginFormState(
       {this.password = '',
       this.email = '',
       this.isvisible = true,
@@ -25,4 +25,7 @@ class LoginFormState {
         isvisible: isvisible ?? this.isvisible,
         formStatus: formStatus ?? this.formStatus);
   }
+
+  @override
+  List<Object?> get props => [email, password, formStatus, isvisible];
 }

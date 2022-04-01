@@ -3,6 +3,8 @@ part of 'signup_form_bloc.dart';
 @immutable
 abstract class SignupFormEvent {}
 
+class SignupInitEvent extends SignupFormEvent {}
+
 //  * Signup Events Below
 class SignupUsernameChangeEvent extends SignupFormEvent {
   final String username;
@@ -21,4 +23,4 @@ class SignupPasswordChangeEvent extends SignupFormEvent {
 
 class SignupSubmitedEvent extends SignupFormEvent {}
 
-class ToggleVisibility extends SignupFormEvent {}
+class ToggleSignupVisibility extends SignupFormEvent {}

@@ -14,24 +14,24 @@ class NetworkService {
           body: <String, dynamic>{"email": email, "password": password});
       if (response.statusCode == 200) {
         return json.decode(response.body);
+      } else {
+        final error = json.decode(response.body)["error"];
+        if (error["email"] != "") {
+          throw CustomError(error["email"]);
+        } else if (error["password"] != "") {
+          throw CustomError(error["password"]);
+        } else {
+          throw CustomError(error);
+        }
       }
-      // else {
-      //   throw Failour(message: json.decode(response.body)["error"]);
-      // }
-    }
-    // on SocketException {
-    //   rethrow;
-    // }
-    catch (er) {
-      print(er);
+    } on SocketException {
+      throw CustomError("No Internet Connection");
     }
   }
 
-  Future<String?> postSignUp(
+  Future<Map<String, dynamic>?> postSignUp(
       String userName, String email, String password) async {
-    // baseUri.replace(path: '/signin');
     Uri url = Uri.parse(baseUrl + "/signup");
-
     print(url.toString());
     try {
       final response = await http.post(url, body: <String, dynamic>{
@@ -39,10 +39,17 @@ class NetworkService {
         "email": email,
         "password": password
       });
-      return response.body;
-    } catch (err) {
-      print(err);
-      // throw Exception(err);
+      if (response.statusCode == 201) {
+        return json.decode(response.body);
+      } else {
+        final error = json.decode(response.body)["error"];
+        if (error["email"] != "") {
+          throw CustomError(error["email"]);
+        }
+        throw CustomError(error);
+      }
+    } on SocketException {
+      throw CustomError("No Internet Connection");
     }
   }
 
@@ -75,14 +82,14 @@ class NetworkService {
   }
 }
 
-class Failour implements Exception {
+class CustomError implements Exception {
   final dynamic message;
 
-  Failour({this.message});
+  CustomError(this.message);
   @override
   String toString() {
     Object? message = this.message;
     if (message == null) return "Exception";
-    return "Exception: $message";
+    return "$message";
   }
 }

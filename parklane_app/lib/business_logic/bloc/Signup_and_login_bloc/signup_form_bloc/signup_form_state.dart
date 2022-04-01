@@ -1,6 +1,6 @@
 part of 'signup_form_bloc.dart';
 
-class SignupFormState {
+class SignupFormState extends Equatable {
   final String username;
   bool get isValidUsername => username.length > 3;
   final String password;
@@ -9,7 +9,7 @@ class SignupFormState {
   bool get isValidEmail => EmailValidator.validate(email);
   final bool isvisible;
   final FormSubmissionStatus formStatus;
-  SignupFormState(
+  const SignupFormState(
       {this.username = '',
       this.password = '',
       this.email = '',
@@ -29,4 +29,7 @@ class SignupFormState {
         isvisible: isvisible ?? this.isvisible,
         formStatus: formStatus ?? this.formStatus);
   }
+
+  @override
+  List<Object?> get props => [email, username, password, isvisible, formStatus];
 }

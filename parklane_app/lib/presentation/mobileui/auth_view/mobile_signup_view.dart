@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+
 import '../../../business_logic/bloc/Signup_and_login_bloc/form_submission_status.dart';
 import '../../../business_logic/bloc/Signup_and_login_bloc/signup_form_bloc/signup_form_bloc.dart';
 import '../../../business_logic/cubit/login_sign_switch_cubit/loginsignswitch_cubit.dart';
@@ -14,107 +15,133 @@ class MobileSignUpView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final Size screenSize = MediaQuery.of(context).size;
-    return Scaffold(
-      extendBodyBehindAppBar: true,
-      appBar: AppBar(
-        elevation: 0,
-        leading: IconButton(
-          icon: const Icon(
-            Icons.arrow_back_ios_new,
+    return BlocListener<SignupFormBloc, SignupFormState>(
+      listener: (context, state) {
+        final errorStatus = state.formStatus;
+        if (errorStatus is FormSubmissionFailedStatus) {
+          showDialog(
+              context: context,
+              builder: (BuildContext context) {
+                return AlertDialog(
+                  title: const Text('Error'),
+                  content: Text(errorStatus.errorMessage),
+                  actions: [
+                    TextButton(
+                        onPressed: () {
+                          context.read<SignupFormBloc>().add(SignupInitEvent());
+                          Navigator.pop(context);
+                        },
+                        child: const Text('OK'))
+                  ],
+                );
+              });
+        }
+      },
+      child: Scaffold(
+        extendBodyBehindAppBar: true,
+        appBar: AppBar(
+          elevation: 0,
+          leading: IconButton(
+            icon: const Icon(
+              Icons.arrow_back_ios_new,
+            ),
+            onPressed: () {
+              Navigator.pop(context);
+            },
           ),
-          onPressed: () {
-            Navigator.pop(context);
-          },
+          backgroundColor: Colors.transparent,
         ),
-        backgroundColor: Colors.transparent,
-      ),
-      body: SingleChildScrollView(
-          child: Column(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          Container(
-            height: screenSize.height * 0.5,
-            width: double.infinity,
-            child: ClipPath(
-              clipper: SignUpWaveUiDesignClipper(),
-              child: Stack(
-                children: [
-                  SvgPicture.asset(
-                    'assets/svgs/intro_screen.svg',
-                    fit: BoxFit.fitWidth,
-                  ),
-                  Container(
-                    // color: Colors.amber.shade200,
-                    width: double.infinity,
-                    alignment: Alignment.centerLeft,
-                    padding:
-                        const EdgeInsets.symmetric(horizontal: 22, vertical: 6),
-                    height: screenSize.height * 0.50,
-                    child: Text(
-                      'Create\nAccount',
-                      style: Theme.of(context).textTheme.headline4,
+        body: SingleChildScrollView(
+            child: Column(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Container(
+              height: screenSize.height * 0.5,
+              width: double.infinity,
+              child: ClipPath(
+                clipper: SignUpWaveUiDesignClipper(),
+                child: Stack(
+                  children: [
+                    SvgPicture.asset(
+                      'assets/svgs/intro_screen.svg',
+                      fit: BoxFit.fitWidth,
                     ),
-                  ),
-                ],
+                    Container(
+                      // color: Colors.amber.shade200,
+                      width: double.infinity,
+                      alignment: Alignment.centerLeft,
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 22, vertical: 6),
+                      height: screenSize.height * 0.50,
+                      child: Text(
+                        'Create\nAccount',
+                        style: Theme.of(context).textTheme.headline4,
+                      ),
+                    ),
+                  ],
+                ),
               ),
             ),
-          ),
-          Align(
-              alignment: Alignment.bottomCenter,
-              child: Form(
-                key: _signupFormKey,
-                child: Container(
-                  margin: const EdgeInsets.all(20),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    mainAxisAlignment: MainAxisAlignment.end,
-                    children: [
-                      _userNameInputField(),
-                      const SizedBox(
-                        height: 10,
-                      ),
-                      _emailInputField(),
-                      const SizedBox(
-                        height: 10,
-                      ),
-                      _passwordInputField(),
-                      const SizedBox(
-                        height: 25,
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: _signupSubmitButton(screenSize),
-                      ),
-                      const SizedBox(
-                        height: 8,
-                      ),
-                      const OrDividerForm(),
-                      const SizedBox(
-                        height: 8,
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: OutlinedButton(
-                            style: OutlinedButton.styleFrom(
-                                side: BorderSide(
-                                    width: 2,
-                                    color:
-                                        Theme.of(context).colorScheme.primary),
-                                minimumSize: Size(screenSize.width - 0.1, 50)),
-                            onPressed: () {
-                              BlocProvider.of<LoginSignupUISwitchCubit>(context)
-                                  .switchToLogin();
-                            },
-                            child: const Text(
-                              'Log in',
-                            )),
-                      )
-                    ],
+            Align(
+                alignment: Alignment.bottomCenter,
+                child: Form(
+                  key: _signupFormKey,
+                  child: Container(
+                    margin: const EdgeInsets.all(20),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      children: [
+                        _userNameInputField(),
+                        const SizedBox(
+                          height: 10,
+                        ),
+                        _emailInputField(),
+                        const SizedBox(
+                          height: 10,
+                        ),
+                        _passwordInputField(),
+                        const SizedBox(
+                          height: 25,
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: _signupSubmitButton(screenSize),
+                        ),
+                        const SizedBox(
+                          height: 8,
+                        ),
+                        const OrDividerForm(),
+                        const SizedBox(
+                          height: 8,
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: OutlinedButton(
+                              style: OutlinedButton.styleFrom(
+                                  side: BorderSide(
+                                      width: 2,
+                                      color: Theme.of(context)
+                                          .colorScheme
+                                          .primary),
+                                  minimumSize:
+                                      Size(screenSize.width - 0.1, 50)),
+                              onPressed: () {
+                                BlocProvider.of<LoginSignupUISwitchCubit>(
+                                        context)
+                                    .switchToLogin();
+                              },
+                              child: const Text(
+                                'Log in',
+                              )),
+                        )
+                      ],
+                    ),
                   ),
-                ),
-              ))
-        ],
-      )),
+                ))
+          ],
+        )),
+      ),
     );
   }
 
@@ -159,7 +186,9 @@ class MobileSignUpView extends StatelessWidget {
               hintText: 'Your password',
               suffixIcon: GestureDetector(
                   onTap: () {
-                    context.read<SignupFormBloc>().add(ToggleVisibility());
+                    context
+                        .read<SignupFormBloc>()
+                        .add(ToggleSignupVisibility());
                   },
                   child: state.isvisible
                       ? const Icon(Icons.visibility_off)
@@ -175,10 +204,14 @@ class MobileSignUpView extends StatelessWidget {
         onChanged: (value) => context
             .read<SignupFormBloc>()
             .add(SigupEmailChangeEvent(email: value)),
-        decoration: const InputDecoration(
-          prefixIcon: Icon(Icons.mail),
-          hintText: 'Your Email',
-        ),
+        decoration: InputDecoration(
+            prefixIcon: const Icon(Icons.mail),
+            hintText: 'Your Email',
+            suffixIcon: state.isValidEmail
+                ? const Icon(
+                    Icons.check,
+                  )
+                : null),
       );
     });
   }
