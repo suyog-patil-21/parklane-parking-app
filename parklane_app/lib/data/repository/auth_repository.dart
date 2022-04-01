@@ -1,5 +1,4 @@
 import 'dart:async';
-import 'dart:convert';
 
 import '../../constants/globals.dart';
 import '../provider/network_service.dart';

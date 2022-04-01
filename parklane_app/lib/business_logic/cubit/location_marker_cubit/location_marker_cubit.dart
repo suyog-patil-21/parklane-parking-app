@@ -1,6 +1,6 @@
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
-import 'package:parklane_app/business_logic/cubit/location_marker_cubit/selected_states.dart';
+import 'selected_states.dart';
 
 import '../../../data/repository/location_repository.dart';
 

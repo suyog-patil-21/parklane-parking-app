@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'home_screen.dart';
+
 import '../../business_logic/bloc/authentication_bloc/authentication_bloc.dart';
 import '../../constants/constant_shape_constrains.dart';
+import '../../constants/text_theme.dart';
 import '../../data/repository/auth_repository.dart';
 import '../router/app_routes.dart';
+import 'home_screen.dart';
 import 'login_signup_page.dart';
-
-import '../../constants/text_theme.dart';
 
 class AppView extends StatefulWidget {
   AppView({Key? key, required this.appRouter}) : super(key: key);

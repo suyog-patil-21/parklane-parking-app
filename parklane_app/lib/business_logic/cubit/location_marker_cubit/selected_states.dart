@@ -1,4 +1,4 @@
-import 'package:parklane_app/data/models/location_model.dart';
+import '../../../data/models/location_model.dart';
 
 abstract class SelectedState {
   const SelectedState();
