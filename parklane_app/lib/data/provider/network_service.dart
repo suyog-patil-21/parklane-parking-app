@@ -4,6 +4,7 @@ import 'dart:io';
 import 'package:http/http.dart' as http;
 import '../models/location_model.dart';
 import '../../constants/globals.dart';
+import 'custom_error.dart';
 
 class NetworkService {
   final String baseUrl = "http://localhost:3000";
@@ -79,17 +80,5 @@ class NetworkService {
       // throw err;
       print("Error in Repository : $err");
     }
-  }
-}
-
-class CustomError implements Exception {
-  final dynamic message;
-
-  CustomError(this.message);
-  @override
-  String toString() {
-    Object? message = this.message;
-    if (message == null) return "Exception";
-    return "$message";
   }
 }

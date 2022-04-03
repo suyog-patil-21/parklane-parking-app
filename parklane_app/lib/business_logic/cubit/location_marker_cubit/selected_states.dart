@@ -4,11 +4,11 @@ abstract class SelectedState {
   const SelectedState();
 }
 
-class IsSelected extends SelectedState {
+class IsSelectedState extends SelectedState {
   final LocationModel location;
-  const IsSelected({required this.location});
+  const IsSelectedState({required this.location});
 }
 
-class IsNotSelected extends SelectedState {
-  const IsNotSelected();
+class IsNotSelectedState extends SelectedState {
+  const IsNotSelectedState();
 }

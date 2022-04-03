@@ -1,14 +1,11 @@
-import 'dart:async';
-import 'dart:convert';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:latlong2/latlong.dart';
+import 'package:parklane_app/data/models/directions_model.dart';
 import '../../business_logic/cubit/location_marker_cubit/location_marker_cubit.dart';
 import '../../data/models/location_model.dart';
-import '../../data/provider/network_service.dart';
 import '../../secrets.dart';
 
 class MapWidget extends StatelessWidget {
@@ -16,6 +13,7 @@ class MapWidget extends StatelessWidget {
       {Key? key,
       required this.screenSize,
       required this.parkingLocations,
+      required this.route,
       this.currentLocation,
       this.mapController})
       : super(key: key);
@@ -23,7 +21,9 @@ class MapWidget extends StatelessWidget {
   Size screenSize;
   MapController? mapController;
   List<LocationModel> parkingLocations;
+  List<MapRoute> route;
   final List<Marker> _markers = [];
+  final List<LatLng> _polylines = [];
   // @override
   // void initState() {
   //   // setState(() async {
@@ -57,22 +57,8 @@ class MapWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final markersProvider =
-        BlocProvider.of<LocationMarkerCubit>(context, listen: true);
-    for (var element in parkingLocations) {
-      _markers.add(Marker(
-          point: LatLng(element.locationCode.lat, element.locationCode.long),
-          builder: (ctx) => GestureDetector(
-                onTap: () {
-                  markersProvider.selectLocation(parkingLocations, element);
-                },
-                child: const Icon(
-                  Icons.location_on_rounded,
-                  color: Colors.orangeAccent,
-                  size: 35,
-                ),
-              )));
-    }
+    // Add the Data that must be done before the rendering in the below funciton.
+    onRebuildUpdate(context);
     return FlutterMap(
       mapController: mapController,
       options: MapOptions(
@@ -91,6 +77,13 @@ class MapWidget extends StatelessWidget {
           //   return Text("MapBox");
           // },
         ),
+        if (_polylines.isNotEmpty)
+          PolylineLayerOptions(
+            polylines: [
+              Polyline(
+                  points: _polylines, strokeWidth: 5.0, color: Colors.green),
+            ],
+          ),
         MarkerLayerOptions(
           markers: [
             // Current Location Marker
@@ -106,21 +99,21 @@ class MapWidget extends StatelessWidget {
                 ),
               ),
             ..._markers,
-            Marker(
-              width: 80.0,
-              height: 80.0,
-              point: LatLng(18.6187067, 73.857895),
-              builder: (ctx) => GestureDetector(
-                onTap: () {
-                  // mapMarkerBottomSheet(context);
-                },
-                child: const Icon(
-                  Icons.location_on_rounded,
-                  color: Colors.blueGrey,
-                  size: 35,
-                ),
-              ),
-            ),
+            // Marker(
+            //   width: 80.0,
+            //   height: 80.0,
+            //   point: LatLng(18.6187067, 73.857895),
+            //   builder: (ctx) => GestureDetector(
+            //     onTap: () {
+            //       // mapMarkerBottomSheet(context);
+            //     },
+            //     child: const Icon(
+            //       Icons.location_on_rounded,
+            //       color: Colors.blueGrey,
+            //       size: 35,
+            //     ),
+            //   ),
+            // ),
             // Marker(
             //     width: 80.0,
             //     height: 80.0,
@@ -135,5 +128,33 @@ class MapWidget extends StatelessWidget {
         ),
       ],
     );
+  }
+
+  void onRebuildUpdate(BuildContext context) {
+    final markersProvider =
+        BlocProvider.of<LocationMarkerCubit>(context, listen: true);
+    for (var item in route) {
+      for (var cordinate in item.geometry.coordinates) {
+        // Data send from server
+        // 1 - longitude
+        // 0 - latitude
+        _polylines.add(LatLng(cordinate[1], cordinate[0]));
+      }
+    }
+
+    for (var element in parkingLocations) {
+      _markers.add(Marker(
+          point: LatLng(element.locationCode.lat, element.locationCode.long),
+          builder: (ctx) => GestureDetector(
+                onTap: () {
+                  markersProvider.selectLocation(parkingLocations, element);
+                },
+                child: const Icon(
+                  Icons.location_on_rounded,
+                  color: Colors.orangeAccent,
+                  size: 35,
+                ),
+              )));
+    }
   }
 }

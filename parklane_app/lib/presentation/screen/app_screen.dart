@@ -8,6 +8,7 @@ import '../../data/repository/auth_repository.dart';
 import '../router/app_routes.dart';
 import 'home_screen.dart';
 import 'login_signup_page.dart';
+import 'map_screen.dart';
 
 class AppView extends StatefulWidget {
   AppView({Key? key, required this.appRouter}) : super(key: key);
@@ -46,27 +47,27 @@ class _AppViewState extends State<AppView> {
         textTheme: textTheme,
       ),
       // ! comment builder property below if working on Specific Screen
-      builder: (context, child) {
-        return BlocListener<AuthenticationBloc, AuthenticationState>(
-          listener: ((context, state) {
-            switch (state.status) {
-              case AuthenticationStatus.authenticated:
-                _navigator.pushNamedAndRemoveUntil(
-                    HomeScreen.route, (route) => false);
-                break;
-              case AuthenticationStatus.unauthenticated:
-              case AuthenticationStatus.unknown:
-                _navigator.pushNamedAndRemoveUntil(
-                    LoginSignupScreen.route, (route) => false);
-                break;
-              default:
-                break;
-            }
-          }),
-          child: child,
-        );
-      },
-      // home: MapScreen(),
+      // builder: (context, child) {
+      //   return BlocListener<AuthenticationBloc, AuthenticationState>(
+      //     listener: ((context, state) {
+      //       switch (state.status) {
+      //         case AuthenticationStatus.authenticated:
+      //           _navigator.pushNamedAndRemoveUntil(
+      //               HomeScreen.route, (route) => false);
+      //           break;
+      //         case AuthenticationStatus.unauthenticated:
+      //         case AuthenticationStatus.unknown:
+      //           _navigator.pushNamedAndRemoveUntil(
+      //               LoginSignupScreen.route, (route) => false);
+      //           break;
+      //         default:
+      //           break;
+      //       }
+      //     }),
+      //     child: child,
+      //   );
+      // },
+      home: MapScreen(),
       onGenerateRoute: widget.appRouter.onGenerateRoute,
     );
   }

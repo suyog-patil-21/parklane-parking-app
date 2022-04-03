@@ -14,7 +14,7 @@ class MarkerListLocationMarkerState extends LocationMarkerState {
   final SelectedState selectedStatusState;
   const MarkerListLocationMarkerState(
       {required this.locations,
-      this.selectedStatusState = const IsNotSelected()});
+      this.selectedStatusState = const IsNotSelectedState()});
   @override
   List<Object> get props => [locations, selectedStatusState];
 
@@ -29,4 +29,7 @@ class MarkerListLocationMarkerState extends LocationMarkerState {
   }
 }
 
-class SingleLocationMarkerState extends LocationMarkerState {}
+class SingleLocationMarkerState extends LocationMarkerState {
+  final LocationModel position;
+  const SingleLocationMarkerState(this.position);
+}

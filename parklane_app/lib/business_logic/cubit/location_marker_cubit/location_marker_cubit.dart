@@ -18,7 +18,7 @@ class LocationMarkerCubit extends Cubit<LocationMarkerState> {
       List<LocationModel> locationlist, LocationModel selected) {
     emit(MarkerListLocationMarkerState(
         locations: locationlist,
-        selectedStatusState: IsSelected(location: selected)));
+        selectedStatusState: IsSelectedState(location: selected)));
   }
 
   void clearLocaitons() {

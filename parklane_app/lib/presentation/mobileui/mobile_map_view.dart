@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_map/plugin_api.dart';
 
 import 'package:latlong2/latlong.dart';
+import 'package:parklane_app/business_logic/cubit/navigation_cubit/navigation_cubit.dart';
 import '../../business_logic/cubit/location_marker_cubit/selected_states.dart';
 import '../../data/models/location_model.dart';
 import '../../business_logic/cubit/geolocation_cubit/geolocation_cubit.dart';
@@ -27,110 +28,132 @@ class MobileMapView extends StatelessWidget {
     return Scaffold(
       extendBodyBehindAppBar: true,
       resizeToAvoidBottomInset: true,
-      // bottomNavigationBar: CustomBottomSearchBar(screenSize: screenSize),
       floatingActionButton: const CustomFloatingButton(),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerTop,
-      body: Stack(
-        children: [
-          BlocBuilder<LocationMarkerCubit, LocationMarkerState>(
-            builder: (context, locationState) {
-              return BlocBuilder<GeolocationCubit, GeolocationState>(
-                builder: (context, geolocationState) {
-                  return MapWidget(
-                    parkingLocations:
-                        locationState is MarkerListLocationMarkerState
-                            ? locationState.locations
+      body: MultiBlocListener(
+        listeners: [
+          BlocListener<NavigationCubit, NavigationState>(
+              listener: ((context, state) {
+            if (state is NavigationErrorState) {
+              ScaffoldMessenger.of(context)
+                ..clearSnackBars()
+                ..showSnackBar(SnackBar(content: Text(state.errorMessage)));
+            }
+          }))
+        ],
+        child: Stack(
+          children: [
+            BlocBuilder<LocationMarkerCubit, LocationMarkerState>(
+              builder: (context, locationState) {
+                return BlocBuilder<GeolocationCubit, GeolocationState>(
+                  builder: (context, geolocationState) {
+                    return BlocBuilder<NavigationCubit, NavigationState>(
+                        builder: (context, navigationState) {
+                      return MapWidget(
+                        route: navigationState is DirectRouteNavigationState
+                            ? navigationState.route.routes
                             : [],
-                    screenSize: screenSize,
-                    mapController: _mapController,
-                    currentLocation: geolocationState is GeolocationLoadedState
-                        ? geolocationState.position
-                        : null,
-                  );
-                },
-              );
-            },
-          ),
+                        parkingLocations:
+                            locationState is MarkerListLocationMarkerState
+                                ? locationState.locations
+                                : [],
+                        screenSize: screenSize,
+                        mapController: _mapController,
+                        currentLocation:
+                            geolocationState is GeolocationLoadedState
+                                ? geolocationState.position
+                                : null,
+                      );
+                    });
+                  },
+                );
+              },
+            ),
 
-          //FLoating list Display
-          Align(
-            alignment: Alignment.bottomCenter,
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.end,
-              children: [
-                Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Align(
-                      alignment: Alignment.bottomRight,
-                      child: BlocBuilder<GeolocationCubit, GeolocationState>(
-                        builder: (context, state) {
-                          return FloatingActionButton.small(
-                            backgroundColor: Colors.white,
-                            onPressed: () {
-                              print("location button pressed ");
-                              if (state is GeolocationDisconnectedState) {
-                                BlocProvider.of<GeolocationCubit>(context)
-                                    .turnOnLocation();
-                              }
-                              if (state is GeolocationLoadedState) {
-                                _mapController.move(
-                                    LatLng(state.position.latitude,
-                                        state.position.longitude),
-                                    18);
-                              }
-                            },
-                            child: Icon(
-                              Icons.my_location_rounded,
-                              color: state is GeolocationLoadedState
-                                  ? Colors.blue
-                                  : null,
-                            ),
-                          );
-                        },
-                      )),
-                ),
-                BlocBuilder<LocationMarkerCubit, LocationMarkerState>(
-                    builder: (context, state) {
-                  if (state is MarkerListLocationMarkerState) {
-                    return ElevatedButton(
-                      onPressed: () {
-                        locationMarkerCubitprovider.clearLocaitons();
-                      },
-                      child: const Text(
-                        'Clear All locations',
-                      ),
-                    );
-                  }
-                  return Container();
-                }),
-                BlocBuilder<LocationMarkerCubit, LocationMarkerState>(
-                  builder: (context, state) {
+            //FLoating list Display
+            Align(
+              alignment: Alignment.bottomCenter,
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Align(
+                        alignment: Alignment.bottomRight,
+                        child: BlocBuilder<GeolocationCubit, GeolocationState>(
+                          builder: (context, state) {
+                            return FloatingActionButton.small(
+                              backgroundColor: Colors.white,
+                              onPressed: () {
+                                print("location button pressed ");
+                                if (state is GeolocationDisconnectedState) {
+                                  BlocProvider.of<GeolocationCubit>(context)
+                                      .turnOnLocation();
+                                }
+                                if (state is GeolocationLoadedState) {
+                                  _mapController.move(
+                                      LatLng(state.position.latitude,
+                                          state.position.longitude),
+                                      18);
+                                }
+                              },
+                              child: Icon(
+                                Icons.my_location_rounded,
+                                color: state is GeolocationLoadedState
+                                    ? Colors.blue
+                                    : null,
+                              ),
+                            );
+                          },
+                        )),
+                  ),
+                  BlocBuilder<LocationMarkerCubit, LocationMarkerState>(
+                      builder: (context, state) {
                     if (state is MarkerListLocationMarkerState) {
-                      final local = state.selectedStatusState;
-                      if (local is IsSelected) {
-                        return _floatingCardWidget(local, context);
-                      }
+                      return ElevatedButton(
+                        onPressed: () {
+                          locationMarkerCubitprovider.clearLocaitons();
+                        },
+                        child: const Text(
+                          'Clear All locations',
+                        ),
+                      );
                     }
                     return Container();
-                  },
-                ),
-                CustomBottomSearchBar(screenSize: screenSize)
-              ],
-            ),
-          )
-        ],
+                  }),
+                  BlocBuilder<LocationMarkerCubit, LocationMarkerState>(
+                    builder: (context, state) {
+                      if (state is MarkerListLocationMarkerState) {
+                        final local = state.selectedStatusState;
+                        if (local is IsSelectedState) {
+                          return _floatingCardWidget(
+                              screenSize, local, context);
+                        }
+                      }
+                      return Container();
+                    },
+                  ),
+                  CustomBottomSearchBar(screenSize: screenSize)
+                ],
+              ),
+            )
+          ],
+        ),
       ),
     );
   }
 
-  Widget _floatingCardWidget(IsSelected local, BuildContext context) {
+  Widget _floatingCardWidget(
+      Size screenSize, IsSelectedState local, BuildContext context) {
     return Container(
         margin: const EdgeInsets.symmetric(horizontal: 6),
         // padding: EdgeInsets.zero,
         height: 140,
         // color: Colors.yellowAccent,
         child: InkWell(
-          onTap: () {},
+          onTap: () {
+            mapMarkerBottomSheet(screenSize, context, local.location);
+          },
           child: Card(
             margin: const EdgeInsets.all(12.0),
             // color: Colors.amber,
@@ -138,14 +161,17 @@ class MobileMapView extends StatelessWidget {
               Expanded(
                   flex: 3,
                   child: Container(
-                    margin: EdgeInsets.all(12.0),
-                    padding: EdgeInsets.all(6.0),
+                    margin: const EdgeInsets.all(12.0),
+                    padding: const EdgeInsets.all(6.0),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(local.location.name,
                             style: Theme.of(context).textTheme.bodyLarge),
-                        Text(local.location.address.toString(),
+                        Text(
+                            local.location.address.city +
+                                "," +
+                                local.location.address.pincode.toString(),
                             style: Theme.of(context).textTheme.bodySmall),
                         const Spacer(),
                         Row(
@@ -172,8 +198,8 @@ class MobileMapView extends StatelessWidget {
               Expanded(
                 flex: 2,
                 child: Container(
-                    padding: EdgeInsets.all(6.0),
-                    child: Placeholder(),
+                    padding: const EdgeInsets.all(6.0),
+                    child: const Placeholder(),
                     decoration: BoxDecoration(
                         // color: Colors.red,
                         borderRadius: BorderRadius.circular(24.0))),
@@ -184,7 +210,7 @@ class MobileMapView extends StatelessWidget {
   }
 
   void mapMarkerBottomSheet(
-      Size screenSize, BuildContext context, LocationModel locaionDetails) {
+      Size screenSize, BuildContext context, LocationModel locationDetails) {
     Scaffold.of(context).showBottomSheet(
       (context) {
         return Column(
@@ -206,11 +232,13 @@ class MobileMapView extends StatelessWidget {
               height: 10.0,
             ),
             Text(
-              locaionDetails.name,
+              locationDetails.name,
               style: Theme.of(context).textTheme.headline4,
             ),
             Text(
-              locaionDetails.address.city,
+              locationDetails.address.city +
+                  "," +
+                  locationDetails.address.pincode.toString(),
               style: Theme.of(context).textTheme.overline,
             ),
             const SizedBox(
@@ -246,6 +274,31 @@ class MobileMapView extends StatelessWidget {
                 ),
               ],
             ),
+            const Spacer(),
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                          padding: const EdgeInsets.all(20)),
+                      onPressed: () {
+                        context.read<NavigationCubit>().getRouteforMarker(
+                            LatLng(18.531339, 73.844704),
+                            LatLng(18.540333, 73.81996));
+                        Navigator.pop(context);
+                      },
+                      child: const Text('Navigate')),
+                  OutlinedButton(
+                    style: OutlinedButton.styleFrom(
+                        padding: const EdgeInsets.all(20)),
+                    onPressed: () {},
+                    child: const Text('Book a Slot'),
+                  )
+                ],
+              ),
+            )
           ],
         );
       },

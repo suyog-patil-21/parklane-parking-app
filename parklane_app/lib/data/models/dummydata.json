@@ -56,6 +56,32 @@
                 "lat": 18.4479593,
                 "long": 73.8294916
             }
+        },
+        {
+            "id": 5,
+            "name": "Valid Location",
+            "address": {
+                "pincode": 411041,
+                "city": "khed,pune"
+            },
+            "totalCapacity": 20,
+            "locationCode": {
+                "lat": 18.531338835371102,
+                "long": 73.84470429262572
+            }
+        },
+        {
+            "id": 6,
+            "name": "Heveans Parks",
+            "address": {
+                "pincode": 53032,
+                "city": "new pune"
+            },
+            "totalCapacity": 20,
+            "locationCode": {
+                "lat": 18.540316946629503,
+                "long": 73.81996561054959
+            }
         }
     ]
 }
