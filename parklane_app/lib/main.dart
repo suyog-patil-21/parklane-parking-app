@@ -110,6 +110,10 @@ class MyApp extends StatelessWidget {
           ),
           BlocProvider(
             create: (context) => NavigationCubit(
+                geolocationRepository:
+                    RepositoryProvider.of<GeolocationRepository>(context),
+                locationMarkerCubit:
+                    BlocProvider.of<LocationMarkerCubit>(context),
                 mapBoxRepository:
                     RepositoryProvider.of<MapBoxRepository>(context)),
           ),

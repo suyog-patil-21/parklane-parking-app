@@ -12,7 +12,7 @@ class MapWidget extends StatelessWidget {
   MapWidget(
       {Key? key,
       required this.screenSize,
-      required this.parkingLocations,
+      required this.locations,
       required this.route,
       this.currentLocation,
       this.mapController})
@@ -20,7 +20,7 @@ class MapWidget extends StatelessWidget {
   Position? currentLocation;
   Size screenSize;
   MapController? mapController;
-  List<LocationModel> parkingLocations;
+  List<LocationModel> locations;
   List<MapRoute> route;
   final List<Marker> _markers = [];
   final List<LatLng> _polylines = [];
@@ -142,12 +142,12 @@ class MapWidget extends StatelessWidget {
       }
     }
 
-    for (var element in parkingLocations) {
+    for (var element in locations) {
       _markers.add(Marker(
           point: LatLng(element.locationCode.lat, element.locationCode.long),
           builder: (ctx) => GestureDetector(
                 onTap: () {
-                  markersProvider.selectLocation(parkingLocations, element);
+                  markersProvider.selectLocation(locations, element);
                 },
                 child: const Icon(
                   Icons.location_on_rounded,

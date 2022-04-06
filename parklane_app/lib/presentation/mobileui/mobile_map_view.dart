@@ -45,6 +45,15 @@ class MobileMapView extends StatelessWidget {
           children: [
             BlocBuilder<LocationMarkerCubit, LocationMarkerState>(
               builder: (context, locationState) {
+                List<LocationModel> _listOfLocation = [];
+                if (locationState is MarkerListLocationMarkerState) {
+                  _listOfLocation = locationState.locations;
+                } else if (locationState is NavigationLocationMarkerState) {
+                  // Set index = 0  Location as destination and index =1 location
+                  _listOfLocation.add(
+                    locationState.destination,
+                  );
+                }
                 return BlocBuilder<GeolocationCubit, GeolocationState>(
                   builder: (context, geolocationState) {
                     return BlocBuilder<NavigationCubit, NavigationState>(
@@ -53,10 +62,7 @@ class MobileMapView extends StatelessWidget {
                         route: navigationState is DirectRouteNavigationState
                             ? navigationState.route.routes
                             : [],
-                        parkingLocations:
-                            locationState is MarkerListLocationMarkerState
-                                ? locationState.locations
-                                : [],
+                        locations: _listOfLocation,
                         screenSize: screenSize,
                         mapController: _mapController,
                         currentLocation:
@@ -116,6 +122,15 @@ class MobileMapView extends StatelessWidget {
                         },
                         child: const Text(
                           'Clear All locations',
+                        ),
+                      );
+                    } else if (state is NavigationLocationMarkerState) {
+                      return ElevatedButton(
+                        onPressed: () {
+                          locationMarkerCubitprovider.clearLocaitons();
+                        },
+                        child: const Text(
+                          'Close Navigation',
                         ),
                       );
                     }
@@ -284,9 +299,12 @@ class MobileMapView extends StatelessWidget {
                       style: ElevatedButton.styleFrom(
                           padding: const EdgeInsets.all(20)),
                       onPressed: () {
-                        context.read<NavigationCubit>().getRouteforMarker(
-                            LatLng(18.531339, 73.844704),
-                            LatLng(18.540333, 73.81996));
+                        context
+                            .read<LocationMarkerCubit>()
+                            .emitNavigaitonState(toLocation: locationDetails);
+                        // context.read<NavigationCubit>().getRouteforMarker(
+                        //     LatLng(18.531339, 73.844704),
+                        //     LatLng(18.540333, 73.81996));
                         Navigator.pop(context);
                       },
                       child: const Text('Navigate')),

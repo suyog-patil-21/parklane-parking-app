@@ -1,5 +1,6 @@
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
+import 'package:parklane_app/business_logic/cubit/navigation_cubit/navigation_cubit.dart';
 import 'selected_states.dart';
 
 import '../../../data/repository/location_repository.dart';
@@ -25,12 +26,20 @@ class LocationMarkerCubit extends Cubit<LocationMarkerState> {
     emit(EmptyLocationMarkerState());
   }
 
+  void emitNavigaitonState({required LocationModel toLocation}) {
+    emit(NavigationLocationMarkerState(toLocation));
+  }
+
   void showLocationResult() async {
-    var locations = await _locationRepository.getMarkerLocations();
-    // ! FIXME : emit State here
-    emit(MarkerListLocationMarkerState(
-      locations: locations,
-    ));
+    try {
+      var locations = await _locationRepository.getMarkerLocations();
+      // ! FIXME : emit State here
+      emit(MarkerListLocationMarkerState(
+        locations: locations,
+      ));
+    } catch (er) {
+      print("FIX THIS $er");
+    }
   }
 }
 

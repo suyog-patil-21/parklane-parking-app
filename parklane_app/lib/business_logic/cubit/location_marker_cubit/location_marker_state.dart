@@ -29,7 +29,9 @@ class MarkerListLocationMarkerState extends LocationMarkerState {
   }
 }
 
-class SingleLocationMarkerState extends LocationMarkerState {
-  final LocationModel position;
-  const SingleLocationMarkerState(this.position);
+class NavigationLocationMarkerState extends LocationMarkerState {
+  final LocationModel destination;
+  const NavigationLocationMarkerState(
+    this.destination,
+  );
 }
